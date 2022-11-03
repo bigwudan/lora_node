@@ -1,0 +1,182 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.30.3.8024/W32 for ARM        13/Mar/2021  17:42:36
+# Copyright 1999-2014 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  
+#        E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\gpio.c
+#    Command line =  
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\gpio.c" -D STM32F030 -D USE_STDPERIPH_DRIVER -lcN
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\STM32F030\List\" -o
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\STM32F030\Obj\" --no_cse --no_unroll --no_inline
+#        --no_code_motion --no_tbaa --no_clustering --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M0 -e --fpu=None --dlib_config
+#        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        7.0\arm\INC\c\DLib_Config_Full.h" -I
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\..\Libraries\STM32F0xx_StdPeriph_Driver\inc\" -I
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\..\" -I
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\..\Radio\inc\" -Ol -I "C:\Program Files (x86)\IAR
+#        Systems\Embedded Workbench 7.0\arm\CMSIS\Include\"
+#    List file    =  
+#        E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\STM32F030\List\gpio.lst
+#    Object file  =  
+#        E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\STM32F030\Obj\gpio.o
+#
+###############################################################################
+
+E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0  LLCC68\LLCC68 Easy Demo v1.0\gpio.c
+      1          #include "stm32f0xx.h"
+      2          #include "gpio.h"
+      3          
+      4          void GPIO_int()
+      5          {
+      6            GPIO_InitTypeDef  GPIO_InitStruct;
+      7            
+      8            /****************************************
+      9             RF_NSS
+     10            ****************************************/
+     11            GPIO_InitStruct.GPIO_OType=GPIO_OType_PP;
+     12            GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_UP;
+     13            GPIO_InitStruct.GPIO_Speed=GPIO_Speed_Level_2;
+     14            GPIO_InitStruct.GPIO_Mode=GPIO_Mode_OUT;
+     15            GPIO_InitStruct.GPIO_Pin=RADIO_NSS_PIN;
+     16            GPIO_Init(RADIO_NSS_PORT, &GPIO_InitStruct);
+     17            
+     18            GPIO_WriteBit( RADIO_NSS_PORT, RADIO_NSS_PIN,Bit_SET);
+     19            
+     20            /****************************************
+     21             RF_RST
+     22            ****************************************/
+     23            GPIO_InitStruct.GPIO_OType=GPIO_OType_PP;
+     24            GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_UP;
+     25            GPIO_InitStruct.GPIO_Speed=GPIO_Speed_Level_2;
+     26            GPIO_InitStruct.GPIO_Mode=GPIO_Mode_OUT;
+     27            GPIO_InitStruct.GPIO_Pin=RADIO_nRESET_PIN;
+     28            GPIO_Init(RADIO_nRESET_PORT, &GPIO_InitStruct);
+     29            
+     30           
+     31            
+     32            /****************************************
+     33             RF_DIO1
+     34            ****************************************/
+     35            GPIO_InitStruct.GPIO_OType=GPIO_OType_PP;
+     36            GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_UP;
+     37            GPIO_InitStruct.GPIO_Speed=GPIO_Speed_Level_2;
+     38            GPIO_InitStruct.GPIO_Mode=GPIO_Mode_IN;
+     39            GPIO_InitStruct.GPIO_Pin=RADIO_DIO1_PIN;
+     40            GPIO_Init(RADIO_DIO1_PORT, &GPIO_InitStruct);
+     41            
+     42            
+     43            /****************************************
+     44             RF_DIO3
+     45            ****************************************/
+     46            GPIO_InitStruct.GPIO_OType=GPIO_OType_PP;
+     47            GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_UP;
+     48            GPIO_InitStruct.GPIO_Speed=GPIO_Speed_Level_2;
+     49            GPIO_InitStruct.GPIO_Mode=GPIO_Mode_IN;
+     50            GPIO_InitStruct.GPIO_Pin=RADIO_DIO3_PIN;
+     51            GPIO_Init(RADIO_DIO3_PORT, &GPIO_InitStruct);
+     52            
+     53            /****************************************
+     54             Radio_BUSY
+     55            ****************************************/
+     56            GPIO_InitStruct.GPIO_OType=GPIO_OType_PP;
+     57            GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_UP;
+     58            GPIO_InitStruct.GPIO_Speed=GPIO_Speed_Level_2;
+     59            GPIO_InitStruct.GPIO_Mode=GPIO_Mode_IN;
+     60            GPIO_InitStruct.GPIO_Pin=RADIO_BUSY_PIN;
+     61            GPIO_Init(RADIO_BUSY_PORT, &GPIO_InitStruct);
+     62            
+     63            
+     64            /****************************************
+     65             M_CLK
+     66            ****************************************/
+     67            GPIO_InitStruct.GPIO_OType=GPIO_OType_PP;
+     68            GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_UP;
+     69            GPIO_InitStruct.GPIO_Speed=GPIO_Speed_Level_2;
+     70            GPIO_InitStruct.GPIO_Mode=GPIO_Mode_AF;
+     71            GPIO_InitStruct.GPIO_Pin=RADIO_SCK_PIN;
+     72            GPIO_Init(RADIO_SCK_PORT, &GPIO_InitStruct);
+     73            GPIO_PinAFConfig(RADIO_SCK_PORT,RADIO_SCK_AF,GPIO_AF_0);
+     74              
+     75            /****************************************
+     76             M_MOSI
+     77            ****************************************/
+     78            GPIO_InitStruct.GPIO_OType=GPIO_OType_PP;
+     79            GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_UP;
+     80            GPIO_InitStruct.GPIO_Speed=GPIO_Speed_Level_2;
+     81            GPIO_InitStruct.GPIO_Mode=GPIO_Mode_AF;
+     82            GPIO_InitStruct.GPIO_Pin=RADIO_MOSI_PIN;
+     83            GPIO_Init(RADIO_MOSI_PORT, &GPIO_InitStruct);
+     84            GPIO_PinAFConfig(RADIO_MOSI_PORT,RADIO_MOSI_AF,GPIO_AF_0);
+     85          
+     86            /****************************************
+     87             M_MISO
+     88            ****************************************/
+     89            GPIO_InitStruct.GPIO_OType=GPIO_OType_PP;
+     90            GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_UP;
+     91            GPIO_InitStruct.GPIO_Speed=GPIO_Speed_Level_2;
+     92            GPIO_InitStruct.GPIO_Mode=GPIO_Mode_AF;
+     93            GPIO_InitStruct.GPIO_Pin=RADIO_MISO_PIN;
+     94            GPIO_Init(RADIO_MISO_PORT, &GPIO_InitStruct);
+     95            GPIO_PinAFConfig(RADIO_MISO_PORT,RADIO_MISO_AF,GPIO_AF_0);
+     96            
+     97            
+     98            /****************************************
+     99             TX
+    100            ****************************************/
+    101            GPIO_InitStruct.GPIO_OType=GPIO_OType_PP;
+    102            GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_UP;
+    103            GPIO_InitStruct.GPIO_Speed=GPIO_Speed_Level_2;
+    104            GPIO_InitStruct.GPIO_Mode=GPIO_Mode_OUT;
+    105            GPIO_InitStruct.GPIO_Pin=RADIO_TX_PIN;
+    106            GPIO_Init(RADIO_TX_PORT, &GPIO_InitStruct);
+    107            
+    108            
+    109            /****************************************
+    110             LED1
+    111            ****************************************/
+    112            GPIO_InitStruct.GPIO_OType=GPIO_OType_PP;
+    113            GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_UP;
+    114            GPIO_InitStruct.GPIO_Speed=GPIO_Speed_Level_2;
+    115            GPIO_InitStruct.GPIO_Mode=GPIO_Mode_OUT;
+    116            GPIO_InitStruct.GPIO_Pin=LED1_PIN;
+    117            GPIO_Init(LED1_PORT, &GPIO_InitStruct);
+    118            
+    119          }
+    120          
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+      16   GPIO_int
+        16   -> GPIO_Init
+        16   -> GPIO_PinAFConfig
+        16   -> GPIO_WriteBit
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+     428  GPIO_int
+
+ 
+ 428 bytes in section .text
+ 
+ 428 bytes of CODE memory
+
+Errors: none
+Warnings: none

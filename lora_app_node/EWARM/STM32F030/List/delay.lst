@@ -1,0 +1,97 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.30.3.8024/W32 for ARM        13/Mar/2021  17:42:36
+# Copyright 1999-2014 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  
+#        E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\delay.c
+#    Command line =  
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\delay.c" -D STM32F030 -D USE_STDPERIPH_DRIVER -lcN
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\STM32F030\List\" -o
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\STM32F030\Obj\" --no_cse --no_unroll --no_inline
+#        --no_code_motion --no_tbaa --no_clustering --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M0 -e --fpu=None --dlib_config
+#        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        7.0\arm\INC\c\DLib_Config_Full.h" -I
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\..\Libraries\STM32F0xx_StdPeriph_Driver\inc\" -I
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\..\" -I
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\..\Radio\inc\" -Ol -I "C:\Program Files (x86)\IAR
+#        Systems\Embedded Workbench 7.0\arm\CMSIS\Include\"
+#    List file    =  
+#        E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\STM32F030\List\delay.lst
+#    Object file  =  
+#        E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\STM32F030\Obj\delay.o
+#
+###############################################################################
+
+E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0  LLCC68\LLCC68 Easy Demo v1.0\delay.c
+      1          #include "delay.h"
+      2          #include <stdint.h>
+      3          
+      4          void Delay_Us (uint32_t delay)
+      5          {
+      6            uint8_t i=0;
+      7            uint32_t j=0;
+      8            for(i=0;i<delay;i++)
+      9            {
+     10              for(j=0;j<8;j++);
+     11            }
+     12          }
+     13          
+     14          
+     15          void Delay_Ms(uint32_t delay )
+     16          {
+     17            uint32_t i=0;
+     18            uint32_t j=0;
+     19            
+     20            for(i=0;i<delay;i++)
+     21            {
+     22              for(j=0;j<4540;j++);
+     23            }
+     24          }
+     25          
+     26          void HAL_Delay_nMS( uint32_t Delay )
+     27          {
+     28              uint32_t tickstart = 0;
+     29              tickstart = HAL_GetTick( );
+     30              while( ( HAL_GetTick( ) - tickstart ) < Delay );
+     31          }
+     32          
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       4   Delay_Ms
+       4   Delay_Us
+       4   HAL_Delay_nMS
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable1
+       4  ??DataTable1_1
+      30  Delay_Ms
+      30  Delay_Us
+      20  HAL_Delay_nMS
+
+ 
+ 88 bytes in section .text
+ 
+ 88 bytes of CODE memory
+
+Errors: none
+Warnings: none

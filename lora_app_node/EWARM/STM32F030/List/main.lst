@@ -1,0 +1,528 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.30.3.8024/W32 for ARM        13/Mar/2021  17:42:36
+# Copyright 1999-2014 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  
+#        E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\main.c
+#    Command line =  
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\main.c" -D STM32F030 -D USE_STDPERIPH_DRIVER -lcN
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\STM32F030\List\" -o
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\STM32F030\Obj\" --no_cse --no_unroll --no_inline
+#        --no_code_motion --no_tbaa --no_clustering --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M0 -e --fpu=None --dlib_config
+#        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        7.0\arm\INC\c\DLib_Config_Full.h" -I
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\..\Libraries\STM32F0xx_StdPeriph_Driver\inc\" -I
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\..\" -I
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\..\Radio\inc\" -Ol -I "C:\Program Files (x86)\IAR
+#        Systems\Embedded Workbench 7.0\arm\CMSIS\Include\"
+#    List file    =  
+#        E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\STM32F030\List\main.lst
+#    Object file  =  
+#        E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\STM32F030\Obj\main.o
+#
+###############################################################################
+
+E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0  LLCC68\LLCC68 Easy Demo v1.0\main.c
+      1          /*
+      2           / _____)             _              | |
+      3          ( (____  _____ ____ _| |_ _____  ____| |__
+      4           \____ \| ___ |    (_   _) ___ |/ ___)  _ \
+      5           _____) ) ____| | | || |_| ____( (___| | | |
+      6          (______/|_____)_|_|_| \__)_____)\____)_| |_|
+      7              (C)2016 Semtech
+      8          
+      9          Description: Tx Continuous Wave implementation
+     10          
+     11          License: Revised BSD License, see LICENSE.TXT file include in the project
+     12          
+     13          Maintainer: Miguel Luis and Gregory Cristian
+     14          */
+     15          #include <string.h>
+     16          #include "user.h"
+     17          #include "sx126x-board.h"
+     18          
+     19          
+     20          /**************************************************************************************************************************************
+     21          Demo 程序流程  EnableMaster=true  为主机端，主机端发送一个"PING"数据后切换到接收，等待从机返回的应答"PONG"数据LED闪烁
+     22          
+     23                         EnableMaster=false 为从机端，从机端接收到主机端发过来的"PING"数据后LED闪烁并发送一个"PONG"数据作为应答
+     24          ***************************************************************************************************************************************/
+     25          
+     26          #define USE_MODEM_LORA
+     27          //#define USE_MODEM_FSK
+     28          
+     29          #define REGION_CN779
+     30          
+     31          #if defined( REGION_AS923 )
+     32          
+     33          #define RF_FREQUENCY                                923000000 // Hz
+     34          
+     35          #elif defined( REGION_AU915 )
+     36          
+     37          #define RF_FREQUENCY                                915000000 // Hz
+     38          
+     39          #elif defined( REGION_CN779 )
+     40          
+     41          #define RF_FREQUENCY                                433000000 // Hz
+     42          
+     43          #elif defined( REGION_EU868 )
+     44          
+     45          #define RF_FREQUENCY                                868000000 // Hz
+     46          
+     47          #elif defined( REGION_KR920 )
+     48          
+     49          #define RF_FREQUENCY                                920000000 // Hz
+     50          
+     51          #elif defined( REGION_IN865 )
+     52          
+     53          #define RF_FREQUENCY                                865000000 // Hz
+     54          
+     55          #elif defined( REGION_US915 )
+     56          
+     57          #define RF_FREQUENCY                                915000000 // Hz
+     58          
+     59          #elif defined( REGION_US915_HYBRID )
+     60          
+     61          #define RF_FREQUENCY                                915000000 // Hz
+     62          
+     63          #else
+     64          
+     65              #error "Please define a frequency band in the compiler options."
+     66          
+     67          #endif
+     68          
+     69          #define TX_OUTPUT_POWER                             22        // 22 dBm
+     70          
+     71          extern bool IrqFired;
+     72          
+     73          
+     74          
+     75          
+     76          bool EnableMaster=true;//主从选择
+     77          
+     78          uint16_t  crc_value;
+     79          /*!
+     80           * Radio events function pointer
+     81           */
+     82          
+     83          static RadioEvents_t RadioEvents;
+     84          
+     85          #if defined( USE_MODEM_LORA )
+     86          
+     87          #define LORA_BANDWIDTH                              0         // [0: 125 kHz,    
+     88                                                                        //  1: 250 kHz,
+     89                                                                        //  2: 500 kHz,
+     90                                                                        //  3: Reserved]
+     91          #define LORA_SPREADING_FACTOR                       9         // [SF7..SF12]    
+     92          #define LORA_CODINGRATE                             4         // [1: 4/5,       
+     93                                                                        //  2: 4/6,
+     94                                                                        //  3: 4/7,
+     95                                                                        //  4: 4/8]
+     96          #define LORA_PREAMBLE_LENGTH                        8         // Same for Tx and Rx
+     97          #define LORA_SYMBOL_TIMEOUT                         0         // Symbols
+     98          #define LORA_FIX_LENGTH_PAYLOAD_ON                  false
+     99          #define LORA_IQ_INVERSION_ON                        false
+    100          
+    101          #elif defined( USE_MODEM_FSK )
+    102          
+    103          #define FSK_FDEV                                    5e3      // Hz 
+    104          #define FSK_DATARATE                                2.4e3      // bps
+    105          #define FSK_BANDWIDTH                               20e3     // Hz >> DSB in sx126x
+    106          #define FSK_AFC_BANDWIDTH                           100e3     // Hz
+    107          #define FSK_PREAMBLE_LENGTH                         5         // Same for Tx and Rx
+    108          #define FSK_FIX_LENGTH_PAYLOAD_ON                   false
+    109          
+    110          #else
+    111              #error "Please define a modem in the compiler options."
+    112          #endif
+    113          
+    114          typedef enum
+    115          {
+    116              LOWPOWER,
+    117              RX,
+    118              RX_TIMEOUT,
+    119              RX_ERROR,
+    120              TX,
+    121              TX_TIMEOUT,
+    122          }States_t;
+    123          
+    124          #define RX_TIMEOUT_VALUE                            1000
+    125          #define BUFFER_SIZE                                 64 // Define the payload size here
+    126          
+    127          const uint8_t PingMsg[] = "PING";
+    128          const uint8_t PongMsg[] = "PONG";
+    129          
+    130          uint16_t BufferSize = BUFFER_SIZE;
+    131          uint8_t TX_Buffer[BUFFER_SIZE];
+    132          uint8_t RX_Buffer[BUFFER_SIZE];
+    133          
+    134          
+    135          States_t State = LOWPOWER;
+    136          
+    137          int8_t RssiValue = 0;
+    138          int8_t SnrValue = 0;
+    139          void OnTxDone( void );
+    140          void OnRxDone( uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr );
+    141          void OnTxTimeout( void );
+    142          void OnRxTimeout( void );
+    143          void OnRxError( void );
+    144          
+    145          
+    146          
+    147          void SysClock_48()
+    148          { 
+    149             RCC_PLLCmd(DISABLE);
+    150             RCC_PLLConfig(RCC_PLLSource_HSI_Div2, RCC_PLLMul_12);//48M
+    151             RCC_PLLCmd(ENABLE);
+    152             while(!RCC_GetFlagStatus(RCC_FLAG_PLLRDY));
+    153             RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
+    154          }
+    155          
+    156          void Tick_Configration()
+    157          {
+    158              /* Setup SysTick Timer for 1ms interrupts ( not too often to save power ) */
+    159              if( SysTick_Config( SystemCoreClock / 1000 ) )
+    160              { 
+    161                  /* Capture error */ 
+    162                  while (1);
+    163              }
+    164          }
+    165          
+    166          void RCC_Configuration()
+    167          {   
+    168            /* Enable GPIO clock */
+    169            RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA|RCC_AHBPeriph_GPIOB|RCC_AHBPeriph_GPIOC|RCC_AHBPeriph_GPIOF, ENABLE);
+    170            
+    171            /* Enable peripheral Clock */
+    172            RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2|RCC_APB1Periph_PWR, ENABLE);  
+    173            
+    174            RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1|RCC_APB2Periph_SYSCFG, ENABLE);
+    175          }
+    176          
+    177          void HW_int(void)
+    178          {
+    179              SysClock_48(); 
+    180              Tick_Configration();
+    181              RCC_Configuration();
+    182              GPIO_int();
+    183              SPI2_Int();
+    184          }
+    185          
+    186          
+    187          void LedToggle(void)
+    188          {
+    189            GPIO_WriteBit( LED1_PORT, LED1_PIN,Bit_RESET);//LED闪烁
+    190            HAL_Delay_nMS(10);
+    191            GPIO_WriteBit( LED1_PORT, LED1_PIN,Bit_SET);
+    192          }
+    193          
+    194          
+    195          int main( void )
+    196          {   
+    197             // uint8_t data[2]={0x12,0x34};
+    198             // static uint8_t test[2];
+    199              
+    200              HW_int();//MCU外围资源初始化
+    201              
+    202              
+    203              // Radio initialization
+    204              RadioEvents.TxDone = OnTxDone;
+    205              RadioEvents.RxDone = OnRxDone;
+    206              RadioEvents.TxTimeout = OnTxTimeout;
+    207              RadioEvents.RxTimeout = OnRxTimeout;
+    208              RadioEvents.RxError = OnRxError;
+    209              
+    210              
+    211              Radio.Init( &RadioEvents );
+    212              Radio.SetChannel( RF_FREQUENCY );
+    213              
+    214            //  Radio.WriteBuffer(0x06C0,data,2);
+    215             // Radio.ReadBuffer(0x06C0,test,2);
+    216              
+    217          #if defined( USE_MODEM_LORA )
+    218              
+    219              Radio.SetTxConfig( MODEM_LORA, TX_OUTPUT_POWER, 0, LORA_BANDWIDTH,
+    220                                             LORA_SPREADING_FACTOR, LORA_CODINGRATE,
+    221                                             LORA_PREAMBLE_LENGTH, LORA_FIX_LENGTH_PAYLOAD_ON,
+    222                                             true, 0, 0, LORA_IQ_INVERSION_ON, 3000 );
+    223              
+    224              Radio.SetRxConfig( MODEM_LORA, LORA_BANDWIDTH, LORA_SPREADING_FACTOR,
+    225                                             LORA_CODINGRATE, 0, LORA_PREAMBLE_LENGTH,
+    226                                             LORA_SYMBOL_TIMEOUT, LORA_FIX_LENGTH_PAYLOAD_ON,
+    227                                             0, true, 0, 0, LORA_IQ_INVERSION_ON, false );
+    228              
+    229          #elif defined( USE_MODEM_FSK )
+    230              
+    231              Radio.SetTxConfig( MODEM_FSK, TX_OUTPUT_POWER, FSK_FDEV, 0,
+    232                                            FSK_DATARATE, 0,
+    233                                            FSK_PREAMBLE_LENGTH, FSK_FIX_LENGTH_PAYLOAD_ON,
+    234                                            true, 0, 0, 0, 3000 );
+    235              
+    236              Radio.SetRxConfig( MODEM_FSK, FSK_BANDWIDTH, FSK_DATARATE,
+    237                                            0, FSK_AFC_BANDWIDTH, FSK_PREAMBLE_LENGTH,
+    238                                            0, FSK_FIX_LENGTH_PAYLOAD_ON, 0, true,
+    239                                            0, 0,false, false );
+    240          #else
+    241              #error "Please define a frequency band in the compiler options."
+    242          #endif
+    243          
+    244              
+    245              if(EnableMaster)
+    246              {
+    247                    TX_Buffer[0] = 'P';
+    248                    TX_Buffer[1] = 'I';
+    249                    TX_Buffer[2] = 'N';
+    250                    TX_Buffer[3] = 'G'; 
+    251                    
+    252                    crc_value=RadioComputeCRC(TX_Buffer,4,CRC_TYPE_IBM);//计算得出要发送数据包CRC值
+    253                    TX_Buffer[4]=crc_value>>8;
+    254                    TX_Buffer[5]=crc_value;
+    255                    Radio.Send( TX_Buffer, 6);
+    256              }
+    257              else
+    258              {
+    259                 Radio.Rx( RX_TIMEOUT_VALUE ); 
+    260              }
+    261              
+    262              while( 1 )
+    263              {
+    264                  Radio.IrqProcess( ); // Process Radio IRQ
+    265              }
+    266          }
+    267          
+    268          void OnTxDone( void )
+    269          {   
+    270              Radio.Standby();
+    271              Radio.Rx( RX_TIMEOUT_VALUE ); //进入接收
+    272          
+    273          }
+    274          
+    275          void OnRxDone( uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr )
+    276          {
+    277              BufferSize = size;
+    278              memcpy( RX_Buffer, payload, BufferSize );
+    279              RssiValue = rssi;
+    280              SnrValue = snr;
+    281              
+    282              Radio.Standby();
+    283              
+    284              if(EnableMaster)
+    285              {
+    286                if(memcmp(RX_Buffer,PongMsg,4)==0)
+    287                {
+    288                  LedToggle();//LED闪烁
+    289                  
+    290                }
+    291               
+    292                  TX_Buffer[0] = 'P';
+    293                  TX_Buffer[1] = 'I';
+    294                  TX_Buffer[2] = 'N';
+    295                  TX_Buffer[3] = 'G'; 
+    296                  
+    297                  crc_value=RadioComputeCRC(TX_Buffer,4,CRC_TYPE_IBM);//计算得出要发送数据包CRC值
+    298                  TX_Buffer[4]=crc_value>>8;
+    299                  TX_Buffer[5]=crc_value;
+    300                  Radio.Send( TX_Buffer, 6);
+    301              }
+    302              else
+    303              {
+    304                if(memcmp(RX_Buffer,PingMsg,4)==0)
+    305                {
+    306                  LedToggle();//LED闪烁
+    307                  
+    308                  TX_Buffer[0] = 'P';
+    309                  TX_Buffer[1] = 'O';
+    310                  TX_Buffer[2] = 'N';
+    311                  TX_Buffer[3] = 'G'; 
+    312                  
+    313                  crc_value=RadioComputeCRC(TX_Buffer,4,CRC_TYPE_IBM);//计算得出要发送数据包CRC值
+    314                  TX_Buffer[4]=crc_value>>8;
+    315                  TX_Buffer[5]=crc_value;
+    316                  Radio.Send( TX_Buffer, 6);
+    317                }
+    318                else
+    319                {
+    320                  Radio.Rx( RX_TIMEOUT_VALUE ); 
+    321                }   
+    322              }
+    323          }
+    324          
+    325          void OnTxTimeout( void )
+    326          {
+    327             
+    328          }
+    329          
+    330          void OnRxTimeout( void )
+    331          {
+    332              Radio.Standby();
+    333              if(EnableMaster)
+    334              {
+    335                  TX_Buffer[0] = 'P';
+    336                  TX_Buffer[1] = 'I';
+    337                  TX_Buffer[2] = 'N';
+    338                  TX_Buffer[3] = 'G'; 
+    339                  
+    340                  crc_value=RadioComputeCRC(TX_Buffer,4,CRC_TYPE_IBM);//计算得出要发送数据包CRC值
+    341                  TX_Buffer[4]=crc_value>>8;
+    342                  TX_Buffer[5]=crc_value;
+    343                  Radio.Send( TX_Buffer, 6);
+    344              }
+    345              else
+    346              {
+    347                Radio.Rx( RX_TIMEOUT_VALUE ); 
+    348              }
+    349          }
+    350          
+    351          void OnRxError( void )
+    352          {
+    353          
+    354              Radio.Standby();
+    355              if(EnableMaster)
+    356              {
+    357                  TX_Buffer[0] = 'P';
+    358                  TX_Buffer[1] = 'I';
+    359                  TX_Buffer[2] = 'N';
+    360                  TX_Buffer[3] = 'G'; 
+    361                  
+    362                  crc_value=RadioComputeCRC(TX_Buffer,4,CRC_TYPE_IBM);//计算得出要发送数据包CRC值
+    363                  TX_Buffer[4]=crc_value>>8;
+    364                  TX_Buffer[5]=crc_value;
+    365                  Radio.Send( TX_Buffer, 6);
+    366              }
+    367              else
+    368              {
+    369                Radio.Rx( RX_TIMEOUT_VALUE ); 
+    370              }
+    371            
+    372          }
+    373          
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       8   HW_int
+         8   -> GPIO_int
+         8   -> RCC_Configuration
+         8   -> SPI2_Int
+         8   -> SysClock_48
+         8   -> Tick_Configration
+       8   LedToggle
+         8   -> GPIO_WriteBit
+         8   -> HAL_Delay_nMS
+      20   NVIC_SetPriority
+      16   OnRxDone
+        16   -- Indirect call
+        16   -> LedToggle
+        16   -> RadioComputeCRC
+        16   -> __aeabi_memcpy
+        16   -> memcmp
+       8   OnRxError
+         8   -- Indirect call
+         8   -> RadioComputeCRC
+       8   OnRxTimeout
+         8   -- Indirect call
+         8   -> RadioComputeCRC
+       8   OnTxDone
+         8   -- Indirect call
+       0   OnTxTimeout
+       8   RCC_Configuration
+         8   -> RCC_AHBPeriphClockCmd
+         8   -> RCC_APB1PeriphClockCmd
+         8   -> RCC_APB2PeriphClockCmd
+       8   SysClock_48
+         8   -> RCC_GetFlagStatus
+         8   -> RCC_PLLCmd
+         8   -> RCC_PLLConfig
+         8   -> RCC_SYSCLKConfig
+       8   SysTick_Config
+         8   -> NVIC_SetPriority
+       8   Tick_Configration
+         8   -> SysTick_Config
+         8 __aeabi_uidiv
+      48   main
+        48   -- Indirect call
+        48   -> HW_int
+        48   -> RadioComputeCRC
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable5
+       4  ??DataTable5_1
+       4  ??DataTable6
+       4  ??DataTable6_1
+       4  ??DataTable6_2
+       4  ??DataTable7
+       4  ??DataTable7_1
+       4  ??DataTable7_2
+       4  ??DataTable7_3
+       4  ??DataTable7_4
+       4  ??DataTable7_5
+       4  ??DataTable7_6
+       4  ??DataTable7_7
+       4  ??DataTable8
+       4  ??DataTable8_1
+       4  ??DataTable8_10
+       4  ??DataTable8_11
+       4  ??DataTable8_12
+       4  ??DataTable8_2
+       4  ??DataTable8_3
+       4  ??DataTable8_4
+       4  ??DataTable8_5
+       4  ??DataTable8_6
+       4  ??DataTable8_7
+       4  ??DataTable8_8
+       4  ??DataTable8_9
+       2  BufferSize
+       1  EnableMaster
+      24  HW_int
+      38  LedToggle
+     134  NVIC_SetPriority
+     234  OnRxDone
+      98  OnRxError
+      98  OnRxTimeout
+      20  OnTxDone
+       2  OnTxTimeout
+       8  PingMsg
+       8  PongMsg
+      30  RCC_Configuration
+      64  RX_Buffer
+      28  RadioEvents
+       1  RssiValue
+       1  SnrValue
+       1  State
+      42  SysClock_48
+      48  SysTick_Config
+      64  TX_Buffer
+      26  Tick_Configration
+       2  crc_value
+     254  main
+
+ 
+   161 bytes in section .bss
+     3 bytes in section .data
+    16 bytes in section .rodata
+ 1 152 bytes in section .text
+ 
+ 1 152 bytes of CODE  memory
+    16 bytes of CONST memory
+   164 bytes of DATA  memory
+
+Errors: none
+Warnings: none

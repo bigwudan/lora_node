@@ -1,0 +1,340 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.30.3.8024/W32 for ARM        13/Mar/2021  17:42:42
+# Copyright 1999-2014 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  
+#        E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\Radio\src\sx126x-board.c
+#    Command line =  
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\Radio\src\sx126x-board.c" -D STM32F030 -D
+#        USE_STDPERIPH_DRIVER -lcN
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\STM32F030\List\" -o
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\STM32F030\Obj\" --no_cse --no_unroll --no_inline
+#        --no_code_motion --no_tbaa --no_clustering --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M0 -e --fpu=None --dlib_config
+#        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        7.0\arm\INC\c\DLib_Config_Full.h" -I
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\..\Libraries\STM32F0xx_StdPeriph_Driver\inc\" -I
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\..\" -I
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\..\Radio\inc\" -Ol -I "C:\Program Files (x86)\IAR
+#        Systems\Embedded Workbench 7.0\arm\CMSIS\Include\"
+#    List file    =  
+#        E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\STM32F030\List\sx126x-board.lst
+#    Object file  =  
+#        E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\STM32F030\Obj\sx126x-board.o
+#
+###############################################################################
+
+E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0  LLCC68\LLCC68 Easy Demo v1.0\Radio\src\sx126x-board.c
+      1          /*
+      2            ______                              _
+      3           / _____)             _              | |
+      4          ( (____  _____ ____ _| |_ _____  ____| |__
+      5           \____ \| ___ |    (_   _) ___ |/ ___)  _ \
+      6           _____) ) ____| | | || |_| ____( (___| | | |
+      7          (______/|_____)_|_|_| \__)_____)\____)_| |_|
+      8              (C)2013 Semtech
+      9          
+     10          Description: SX126x driver specific target board functions implementation
+     11          
+     12          License: Revised BSD License, see LICENSE.TXT file include in the project
+     13          
+     14          Maintainer: Miguel Luis and Gregory Cristian
+     15          */
+     16          #include "stm32f0xx.h"
+     17          #include "delay.h"
+     18          #include "gpio.h"
+     19          #include "spi.h"
+     20          #include "radio.h"
+     21          #include "sx126x.h"
+     22          #include "sx126x-board.h"
+     23          
+     24          
+     25          void SX126xReset( void )
+     26          {
+     27              HAL_Delay_nMS( 10 );
+     28              GPIO_WriteBit( RADIO_nRESET_PORT, RADIO_nRESET_PIN,Bit_RESET);
+     29              HAL_Delay_nMS( 20 );
+     30              GPIO_WriteBit( RADIO_nRESET_PORT, RADIO_nRESET_PIN,Bit_SET);
+     31              HAL_Delay_nMS( 10 );
+     32          }
+     33          
+     34          void SX126xWaitOnBusy( void )
+     35          {
+     36             while(GPIO_ReadInputDataBit(RADIO_BUSY_PORT,RADIO_BUSY_PIN)==Bit_SET);
+     37          }
+     38          
+     39          
+     40          void SX126xWakeup( void )
+     41          {
+     42              GPIO_WriteBit( RADIO_NSS_PORT, RADIO_NSS_PIN,Bit_RESET);
+     43             
+     44              SpiInOut(RADIO_GET_STATUS);
+     45              SpiInOut(0);
+     46              
+     47              GPIO_WriteBit( RADIO_NSS_PORT, RADIO_NSS_PIN,Bit_SET);
+     48          
+     49              // Wait for chip to be ready.
+     50              SX126xWaitOnBusy( );
+     51          }
+     52          
+     53          void SX126xWriteCommand( RadioCommands_t command, uint8_t *buffer, uint16_t size )
+     54          {
+     55          
+     56              SX126xCheckDeviceReady( );
+     57          
+     58              GPIO_WriteBit( RADIO_NSS_PORT, RADIO_NSS_PIN,Bit_RESET);
+     59          
+     60              SpiInOut(( uint8_t )command );
+     61          
+     62              for( uint16_t i = 0; i < size; i++ )
+     63              {
+     64                  SpiInOut(buffer[i] );
+     65              }
+     66          
+     67              GPIO_WriteBit( RADIO_NSS_PORT, RADIO_NSS_PIN,Bit_SET);
+     68              
+     69              if( command != RADIO_SET_SLEEP )
+     70              {
+     71                  SX126xWaitOnBusy( );
+     72              }
+     73          }
+     74          
+     75          void SX126xReadCommand( RadioCommands_t command, uint8_t *buffer, uint16_t size )
+     76          {
+     77              SX126xCheckDeviceReady( );
+     78          
+     79              GPIO_WriteBit( RADIO_NSS_PORT, RADIO_NSS_PIN,Bit_RESET);
+     80          
+     81              SpiInOut(( uint8_t )command );
+     82              SpiInOut(0x00 );
+     83              for( uint16_t i = 0; i < size; i++ )
+     84              {
+     85                  buffer[i] = SpiInOut(0 );
+     86              }
+     87          
+     88              GPIO_WriteBit( RADIO_NSS_PORT, RADIO_NSS_PIN,Bit_SET);
+     89          
+     90              SX126xWaitOnBusy( );
+     91          }
+     92          
+     93          void SX126xWriteRegisters( uint16_t address, uint8_t *buffer, uint16_t size )
+     94          {
+     95              SX126xCheckDeviceReady( );
+     96          
+     97              GPIO_WriteBit( RADIO_NSS_PORT, RADIO_NSS_PIN,Bit_RESET);
+     98              
+     99              SpiInOut(RADIO_WRITE_REGISTER );
+    100              SpiInOut(( address & 0xFF00 ) >> 8 );
+    101              SpiInOut( address & 0x00FF );
+    102              
+    103              for( uint16_t i = 0; i < size; i++ )
+    104              {
+    105                  SpiInOut(buffer[i] );
+    106              }
+    107          
+    108          
+    109              GPIO_WriteBit( RADIO_NSS_PORT, RADIO_NSS_PIN,Bit_SET);
+    110          
+    111              SX126xWaitOnBusy( );
+    112          }
+    113          
+    114          void SX126xWriteRegister( uint16_t address, uint8_t value )
+    115          {
+    116              SX126xWriteRegisters( address, &value, 1 );
+    117          }
+    118          
+    119          void SX126xReadRegisters( uint16_t address, uint8_t *buffer, uint16_t size )
+    120          {
+    121              SX126xCheckDeviceReady( );
+    122          
+    123              GPIO_WriteBit( RADIO_NSS_PORT, RADIO_NSS_PIN,Bit_RESET);
+    124          
+    125              SpiInOut(RADIO_READ_REGISTER );
+    126              SpiInOut(( address & 0xFF00 ) >> 8 );
+    127              SpiInOut( address & 0x00FF );
+    128              SpiInOut( 0 );
+    129              for( uint16_t i = 0; i < size; i++ )
+    130              {
+    131                  buffer[i] = SpiInOut(0 );
+    132              }
+    133          
+    134              GPIO_WriteBit( RADIO_NSS_PORT, RADIO_NSS_PIN,Bit_SET);
+    135          
+    136              SX126xWaitOnBusy( );
+    137          }
+    138          
+    139          uint8_t SX126xReadRegister( uint16_t address )
+    140          {
+    141              uint8_t data;
+    142              SX126xReadRegisters( address, &data, 1 );
+    143              return data;
+    144          }
+    145          
+    146          void SX126xWriteBuffer( uint8_t offset, uint8_t *buffer, uint8_t size )
+    147          {
+    148              SX126xCheckDeviceReady( );
+    149          
+    150              GPIO_WriteBit( RADIO_NSS_PORT, RADIO_NSS_PIN,Bit_RESET);
+    151              
+    152              SpiInOut( RADIO_WRITE_BUFFER );
+    153              SpiInOut( offset );
+    154              for( uint16_t i = 0; i < size; i++ )
+    155              {
+    156                  SpiInOut( buffer[i] );
+    157              }
+    158          
+    159              GPIO_WriteBit( RADIO_NSS_PORT, RADIO_NSS_PIN,Bit_SET);
+    160          
+    161              SX126xWaitOnBusy( );
+    162          }
+    163          
+    164          void SX126xReadBuffer( uint8_t offset, uint8_t *buffer, uint8_t size )
+    165          {
+    166              SX126xCheckDeviceReady( );
+    167          
+    168              GPIO_WriteBit( RADIO_NSS_PORT, RADIO_NSS_PIN,Bit_RESET);
+    169          
+    170              SpiInOut(  RADIO_READ_BUFFER );
+    171              SpiInOut(  offset );
+    172              SpiInOut(  0 );
+    173              for( uint16_t i = 0; i < size; i++ )
+    174              {
+    175                  buffer[i] = SpiInOut( 0 );
+    176              }
+    177          
+    178              GPIO_WriteBit( RADIO_NSS_PORT, RADIO_NSS_PIN,Bit_SET);
+    179              
+    180              SX126xWaitOnBusy( );
+    181          }
+    182          
+    183          void SX126xSetRfTxPower( int8_t power )
+    184          {
+    185              SX126xSetTxParams( power, RADIO_RAMP_40_US );
+    186          }
+    187          
+    188          uint8_t SX126xGetPaSelect( uint32_t channel )
+    189          {
+    190          //    if( GpioRead( &DeviceSel ) == 1 )
+    191          //    {
+    192          //        return SX1261;
+    193          //    }
+    194          //    else
+    195          //    {
+    196          //        return SX1262;
+    197          //    }
+    198            
+    199            return SX1262;
+    200          }
+    201          
+    202          void SX126xAntSwOn( void )
+    203          {
+    204              //GpioInit( &AntPow, ANT_SWITCH_POWER, PIN_OUTPUT, PIN_PUSH_PULL, PIN_PULL_UP, 1 );
+    205          }
+    206          
+    207          void SX126xAntSwOff( void )
+    208          {
+    209             // GpioInit( &AntPow, ANT_SWITCH_POWER, PIN_ANALOGIC, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
+    210          }
+    211          
+    212          bool SX126xCheckRfFrequency( uint32_t frequency )
+    213          {
+    214              // Implement check. Currently all frequencies are supported
+    215              return true;
+    216          }
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       0   SX126xAntSwOff
+       0   SX126xAntSwOn
+       0   SX126xCheckRfFrequency
+       0   SX126xGetPaSelect
+      16   SX126xReadBuffer
+        16   -> GPIO_WriteBit
+        16   -> SX126xCheckDeviceReady
+        16   -> SX126xWaitOnBusy
+        16   -> SpiInOut
+      16   SX126xReadCommand
+        16   -> GPIO_WriteBit
+        16   -> SX126xCheckDeviceReady
+        16   -> SX126xWaitOnBusy
+        16   -> SpiInOut
+       8   SX126xReadRegister
+         8   -> SX126xReadRegisters
+      16   SX126xReadRegisters
+        16   -> GPIO_WriteBit
+        16   -> SX126xCheckDeviceReady
+        16   -> SX126xWaitOnBusy
+        16   -> SpiInOut
+       8   SX126xReset
+         8   -> GPIO_WriteBit
+         8   -> HAL_Delay_nMS
+       8   SX126xSetRfTxPower
+         8   -> SX126xSetTxParams
+       8   SX126xWaitOnBusy
+         8   -> GPIO_ReadInputDataBit
+       8   SX126xWakeup
+         8   -> GPIO_WriteBit
+         8   -> SX126xWaitOnBusy
+         8   -> SpiInOut
+      16   SX126xWriteBuffer
+        16   -> GPIO_WriteBit
+        16   -> SX126xCheckDeviceReady
+        16   -> SX126xWaitOnBusy
+        16   -> SpiInOut
+      24   SX126xWriteCommand
+        24   -> GPIO_WriteBit
+        24   -> SX126xCheckDeviceReady
+        24   -> SX126xWaitOnBusy
+        24   -> SpiInOut
+       8   SX126xWriteRegister
+         8   -> SX126xWriteRegisters
+      16   SX126xWriteRegisters
+        16   -> GPIO_WriteBit
+        16   -> SX126xCheckDeviceReady
+        16   -> SX126xWaitOnBusy
+        16   -> SpiInOut
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable8
+       2  SX126xAntSwOff
+       2  SX126xAntSwOn
+       4  SX126xCheckRfFrequency
+       4  SX126xGetPaSelect
+      90  SX126xReadBuffer
+      80  SX126xReadCommand
+      18  SX126xReadRegister
+      98  SX126xReadRegisters
+      42  SX126xReset
+      12  SX126xSetRfTxPower
+      18  SX126xWaitOnBusy
+      44  SX126xWakeup
+      82  SX126xWriteBuffer
+      78  SX126xWriteCommand
+      14  SX126xWriteRegister
+      90  SX126xWriteRegisters
+
+ 
+ 682 bytes in section .text
+ 
+ 682 bytes of CODE memory
+
+Errors: none
+Warnings: none

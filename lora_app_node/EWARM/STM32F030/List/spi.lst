@@ -1,0 +1,128 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.30.3.8024/W32 for ARM        13/Mar/2021  17:42:37
+# Copyright 1999-2014 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  
+#        E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\spi.c
+#    Command line =  
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\spi.c" -D STM32F030 -D USE_STDPERIPH_DRIVER -lcN
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\STM32F030\List\" -o
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\STM32F030\Obj\" --no_cse --no_unroll --no_inline
+#        --no_code_motion --no_tbaa --no_clustering --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M0 -e --fpu=None --dlib_config
+#        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        7.0\arm\INC\c\DLib_Config_Full.h" -I
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\..\Libraries\STM32F0xx_StdPeriph_Driver\inc\" -I
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\..\" -I
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\..\Radio\inc\" -Ol -I "C:\Program Files (x86)\IAR
+#        Systems\Embedded Workbench 7.0\arm\CMSIS\Include\"
+#    List file    =  
+#        E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\STM32F030\List\spi.lst
+#    Object file  =  
+#        E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\STM32F030\Obj\spi.o
+#
+###############################################################################
+
+E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0  LLCC68\LLCC68 Easy Demo v1.0\spi.c
+      1          #include "stm32f0xx.h"
+      2          
+      3          void SPI2_Int()
+      4          {
+      5              SPI_InitTypeDef  SPI_InitStruct;
+      6              
+      7              SPI_InitStruct.SPI_Direction = SPI_Direction_2Lines_FullDuplex;//全双工模式
+      8              SPI_InitStruct.SPI_Mode = SPI_Mode_Master;
+      9              SPI_InitStruct.SPI_DataSize = SPI_DataSize_8b;
+     10              SPI_InitStruct.SPI_CPHA = SPI_CPHA_1Edge;//第一个边沿
+     11              SPI_InitStruct.SPI_CPOL = SPI_CPOL_Low;//上升沿捕获
+     12              SPI_InitStruct.SPI_NSS = SPI_NSS_Soft;
+     13              SPI_InitStruct.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_16; // 6MHz
+     14              SPI_InitStruct.SPI_FirstBit = SPI_FirstBit_MSB;
+     15              SPI_InitStruct.SPI_CRCPolynomial = 7;
+     16              SPI_Init(SPI2,&SPI_InitStruct);
+     17              
+     18              SPI_RxFIFOThresholdConfig(SPI2, SPI_RxFIFOThreshold_QF);
+     19              SPI_Cmd(SPI2, ENABLE );
+     20          }
+     21          
+     22          /*!
+     23           * @brief Sends txBuffer and receives rxBuffer
+     24           *
+     25           * @param [IN] txBuffer Byte to be sent
+     26           * @param [OUT] rxBuffer Byte to be sent
+     27           * @param [IN] size Byte to be sent
+     28           */
+     29          uint8_t SpiInOut( uint8_t txBuffer)
+     30          {
+     31              
+     32                while( SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_TXE) == RESET);//当发送buffer为空时(说明上一次数据已复制到移位寄存器中)退出,这时可以往buffer里面写数据
+     33                SPI_SendData8(SPI2, txBuffer);
+     34              
+     35                while( SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_RXNE) == RESET);//当接收buffer为非空时退出
+     36                return SPI_ReceiveData8(SPI2);
+     37                
+     38             
+     39          }
+     40          
+     41          void SpiIn( uint8_t *txBuffer, uint16_t size )
+     42          {
+     43              uint16_t i;
+     44              
+     45              for(i=0;i<size;i++)
+     46              {
+     47                while( SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_TXE) == RESET);//当发送buffer为空时(说明上一次数据已复制到移位寄存器中)退出,这时可以往buffer里面写数据
+     48                SPI_SendData8(SPI2, txBuffer[i]);
+     49                
+     50                while( SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_RXNE) == RESET);//当接收buffer为非空时退出
+     51                SPI_ReceiveData8(SPI2);
+     52              }
+     53          }
+     54          
+     55          
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+      24   SPI2_Int
+        24   -> SPI_Cmd
+        24   -> SPI_Init
+        24   -> SPI_RxFIFOThresholdConfig
+      16   SpiIn
+        16   -> SPI_I2S_GetFlagStatus
+        16   -> SPI_ReceiveData8
+        16   -> SPI_SendData8
+       8   SpiInOut
+         8   -> SPI_I2S_GetFlagStatus
+         8   -> SPI_ReceiveData8
+         8   -> SPI_SendData8
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable2
+      94  SPI2_Int
+      62  SpiIn
+      46  SpiInOut
+
+ 
+ 206 bytes in section .text
+ 
+ 206 bytes of CODE memory
+
+Errors: none
+Warnings: none

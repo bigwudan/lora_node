@@ -1,0 +1,113 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.30.3.8024/W32 for ARM        13/Mar/2021  17:42:36
+# Copyright 1999-2014 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  
+#        E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\Radio\src\crc.c
+#    Command line =  
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\Radio\src\crc.c" -D STM32F030 -D USE_STDPERIPH_DRIVER -lcN
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\STM32F030\List\" -o
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\STM32F030\Obj\" --no_cse --no_unroll --no_inline
+#        --no_code_motion --no_tbaa --no_clustering --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M0 -e --fpu=None --dlib_config
+#        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        7.0\arm\INC\c\DLib_Config_Full.h" -I
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\..\Libraries\STM32F0xx_StdPeriph_Driver\inc\" -I
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\..\" -I
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\..\Radio\inc\" -Ol -I "C:\Program Files (x86)\IAR
+#        Systems\Embedded Workbench 7.0\arm\CMSIS\Include\"
+#    List file    =  
+#        E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\STM32F030\List\crc.lst
+#    Object file  =  
+#        E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\STM32F030\Obj\crc.o
+#
+###############################################################################
+
+E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0  LLCC68\LLCC68 Easy Demo v1.0\Radio\src\crc.c
+      1          #include "crc.h"
+      2          
+      3          
+      4          uint16_t ComputeCrc( uint16_t crc, uint8_t dataByte, uint16_t polynomial )
+      5          {
+      6            uint8_t i;
+      7            
+      8            for( i = 0; i < 8; i++ )
+      9            {
+     10             if( ( ( ( crc & 0x8000 ) >> 8 ) ^ ( dataByte & 0x80 ) ) != 0 )
+     11             {
+     12               crc <<= 1; // shift left once
+     13               crc ^= polynomial; // XOR with polynomial
+     14             }
+     15             else
+     16             { 
+     17               crc <<= 1; // shift left once
+     18             }
+     19             dataByte <<= 1; // Next data bit
+     20            }
+     21            return crc;
+     22          }
+     23          
+     24          
+     25          uint16_t RadioComputeCRC( uint8_t *buffer, uint8_t length, uint8_t crcType )
+     26          {
+     27            uint8_t i = 0;
+     28            uint16_t crc = 0;
+     29            uint16_t polynomial = 0;
+     30            
+     31            polynomial = ( crcType == CRC_TYPE_IBM ) ? POLYNOMIAL_IBM : POLYNOMIAL_CCITT;
+     32            crc = ( crcType == CRC_TYPE_IBM ) ? CRC_IBM_SEED : CRC_CCITT_SEED;
+     33            for( i = 0; i < length; i++ )
+     34            {
+     35             crc = ComputeCrc( crc, buffer[i], polynomial );
+     36            }
+     37            if( crcType == CRC_TYPE_IBM )
+     38            {
+     39             return crc;
+     40            }
+     41            else
+     42            {
+     43             return( ( uint16_t ) ( ~crc ));
+     44             }
+     45          }
+     46          
+     47          
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+      12   ComputeCrc
+      24   RadioComputeCRC
+        24   -> ComputeCrc
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable0
+       4  ??DataTable0_1
+       4  ??DataTable0_2
+       4  ??DataTable0_3
+      50  ComputeCrc
+      86  RadioComputeCRC
+
+ 
+ 152 bytes in section .text
+ 
+ 152 bytes of CODE memory
+
+Errors: none
+Warnings: none
