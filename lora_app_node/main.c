@@ -153,6 +153,59 @@ void OnRxError( void );
 
 void SysClock_48()
 { 
+  __IO uint32_t StartUpCounter = 0, HSEStatus = 0;	
+	RCC_DeInit();
+	RCC_HSICmd(ENABLE);
+	
+	while(RCC_GetFlagStatus(RCC_FLAG_HSIRDY) == 0){
+		__NOP;
+	
+	};
+	
+	
+	
+    /* Enable Prefetch Buffer and set Flash Latency */
+    FLASH->ACR = FLASH_ACR_PRFTBE | FLASH_ACR_LATENCY;
+ 
+    /* HCLK = SYSCLK */
+    RCC->CFGR |= (uint32_t)RCC_CFGR_HPRE_DIV1;
+      
+    /* PCLK = HCLK */
+    RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE_DIV1;
+	
+	
+	
+//	 RCC_HCLKConfig(RCC_CFGR_HPRE_DIV1);
+//		RCC_PCLKConfig(RCC_CFGR_PPRE_DIV1);
+	
+	  RCC_PLLConfig(RCC_PLLSource_HSI_Div2, RCC_PLLMul_12);//48M
+	
+		RCC_PLLCmd(ENABLE);
+	
+		while(RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == 0){
+			__NOP;
+	
+		};
+		RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
+		
+		while(RCC_GetSYSCLKSource() !=RCC_CFGR_SWS_PLL ){
+			__NOP;
+		
+		}
+		
+	
+//		while(RCC_GetFlagStatus(RCC_FLAG_PLLRDY) != RESET);
+	
+	    /* Wait till PLL is used as system clock source */
+//    while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS) != (uint32_t)RCC_CFGR_SWS_PLL)
+//    {
+//    }
+}
+
+
+void _SysClock_48()
+{ 
+	RCC_DeInit();
    RCC_PLLCmd(DISABLE);
    RCC_PLLConfig(RCC_PLLSource_HSI_Div2, RCC_PLLMul_12);//48M
    RCC_PLLCmd(ENABLE);
@@ -206,6 +259,7 @@ void timerInit()
 
 void HW_int(void)
 {
+		
     SysClock_48(); 
     Tick_Configration();
     RCC_Configuration();
@@ -230,7 +284,7 @@ static void _CadDone  ( bool channelActivityDetected ){
 
 	printf("caddone[%d]\n", channelActivityDetected);
 	if(channelActivityDetected == 0){
-        TX_Buffer[0] = 0x55; 
+        TX_Buffer[0] = 0x11; 
         TX_Buffer[1] = 0x07;
         TX_Buffer[2] = 0x02;
 				TX_Buffer[3] = 0x22;
@@ -258,7 +312,7 @@ void check_cad(){
 
 int main(void){
 	HW_int();//吴丹
-	
+	printf("main>>>>>>>>>>>>>>>>>>\n");
 	Delay_Ms(5000);
 	
 	lora_node_init(); //初始化

@@ -10,7 +10,7 @@
 #include "rtc.h"
 
 #define LORA_NODE_RX_TIMEOUT_VALUE                            1000
-#define LORA_NODE_RX_TIMEOUT_VALUE                            1000
+
 
 #define MAX_RECV_NUM 24
 
@@ -79,6 +79,8 @@ Demo ????  EnableMaster=true  ????,???????"PING"????????,?????????"PONG"??LED??
 #define LORA_FIX_LENGTH_PAYLOAD_ON                  false
 #define LORA_IQ_INVERSION_ON                        false
 
+#define LORA_NODE_ADDR    0x2 //0x1
+
 
 extern bool IrqFired;
 
@@ -121,7 +123,15 @@ void lora_node_init(){
 																 LORA_CODINGRATE, 0, LORA_PREAMBLE_LENGTH,
 																 LORA_SYMBOL_TIMEOUT, LORA_FIX_LENGTH_PAYLOAD_ON,
 																 0, true, 0, 0, LORA_IQ_INVERSION_ON, false );	
-	
+	printf("config[%d][%d][%d][%d][%d][%d][%d][%d]\n",
+	MODEM_LORA,
+	TX_OUTPUT_POWER, 
+	LORA_BANDWIDTH, 
+	LORA_SPREADING_FACTOR ,
+	LORA_CODINGRATE,
+	LORA_PREAMBLE_LENGTH ,
+	LORA_FIX_LENGTH_PAYLOAD_ON,
+	LORA_IQ_INVERSION_ON);
 	return ;
 }
 
@@ -131,11 +141,11 @@ void lora_change_state(lora_fsm_state state){
 }
 
 static void _send_data(){
-	uint8_t buf[] = {0x11, 0x22};
+	uint8_t buf[] = {LORA_NODE_ADDR};
 	uint8_t *snd_buf = NULL;
 	uint8_t len = 0;
 	lora_common_snd_beg();
-	lora_common_snd_join(0x03, buf, sizeof(buf));
+	lora_common_snd_join(0x00, buf, sizeof(buf));
 	lora_common_snd_end();
 	lora_common_get_data(&snd_buf, &len);
 	
@@ -200,7 +210,15 @@ static lora_err_t _recv_end_fsm_func(){
 		printf("[%02X]", _recv_buf[i]);
 	}
 	printf("\n");
-	lora_change_state(CAD_CHECK_FSM);
+	if(_recv_buf[3] == LORA_NODE_ADDR){
+		printf("join SLEEP_FSM\n");
+		lora_change_state(SLEEP_FSM);
+	}else{
+		printf("join CAD_CHECK_FSM\n");
+		lora_change_state(CAD_CHECK_FSM);
+	}
+	
+
 	return LORA_OK;
 }
 
@@ -210,7 +228,9 @@ static lora_err_t _recv_overtime_fsm_func(){
 }
 
 static lora_err_t _sleep_fsm_func(){
-
+	printf("[%s][%d]\n", __func__, __LINE__);	
+	Delay_Ms(1000*60);
+	lora_change_state(CAD_CHECK_FSM);
 	return LORA_OK;
 }
 
@@ -240,12 +260,13 @@ static lora_err_t _cad_busy_fsm_func(){
 static lora_err_t _again_fsm_func(){
 	//等待下次重新
 	//lora_change_state(AGAINING_FSM);
-	printf("[%s][%d]\n", __func__, __LINE__);
+	//printf("[%s][%d]\n", __func__, __LINE__);
+	lora_change_state(CAD_CHECK_FSM);
 	return LORA_OK;
 }
 
 static lora_err_t _againing_fsm_func(){
-	Delay_Ms(2000);
+	Delay_Ms(5000);
 	lora_change_state(AGAIN_END_FSM);
 	return LORA_OK;
 }
@@ -292,12 +313,15 @@ void lora_node_task(){
 	return ;
 }
 
+
+
+
 //set cad 
 static void _check_cad(){
 	printf("check_cad\n");
 	SX126xSetDioIrqParams( IRQ_RADIO_ALL,IRQ_RADIO_ALL,IRQ_RADIO_NONE,IRQ_RADIO_NONE );
 	//SX126xSetCadParams(LORA_CAD_02_SYMBOL, 22, 10, LORA_CAD_ONLY, 0);
-	SX126xSetCadParams(LORA_CAD_02_SYMBOL, 28, 10, LORA_CAD_ONLY, 0);
+	SX126xSetCadParams(LORA_CAD_16_SYMBOL, 32, 20, LORA_CAD_ONLY, 0);
 	SX126xSetCad();
 	return ;
 }
