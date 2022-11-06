@@ -192,14 +192,7 @@ void SysClock_48()
 			__NOP;
 		
 		}
-		
-	
-//		while(RCC_GetFlagStatus(RCC_FLAG_PLLRDY) != RESET);
-	
-	    /* Wait till PLL is used as system clock source */
-//    while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS) != (uint32_t)RCC_CFGR_SWS_PLL)
-//    {
-//    }
+
 }
 
 
@@ -311,15 +304,18 @@ void check_cad(){
 
 
 int main(void){
+	RTC_TimeTypeDef	  RTC_TimeStructure;
 	HW_int();//吴丹
-	printf("main>>>>>>>>>>>>>>>>>>\n");
+	printf("m11ain>stepp>>>>>>>>>>>>>>>>>\n");
 	Delay_Ms(5000);
-	
+	printf("join standby\n");
+	PWR_EnterSTANDBYMode();		
 	lora_node_init(); //初始化
 	while(1){
 		Radio.IrqProcess( ); // Process Radio IRQ
 		lora_node_task();		
-
+		rtc_get_time(&RTC_TimeStructure);
+		printf("xxxxx[%d][%d][%d]\n", RTC_TimeStructure.RTC_Hours, RTC_TimeStructure.RTC_Minutes, RTC_TimeStructure.RTC_Seconds);
 	}
 }
 

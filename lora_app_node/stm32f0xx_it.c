@@ -192,3 +192,8 @@ void TIM3_IRQHandler(void)
 				}
       }
 }
+
+void RTC_IRQHandler(void){
+	printf("RTC ALARM INTERRUPT\r\n");
+	
+}
