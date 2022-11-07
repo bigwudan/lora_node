@@ -8,6 +8,11 @@
 void rtc_get_time(RTC_TimeTypeDef	  *RTC_TimeStructure);
 void rtc_set(void);
 void RTC_Alarm_Config(void);
+/*
+闹铃
+@param min 分钟
+*/
+void RTC_Alarm_set_min(uint8_t min);
 
 #endif
 

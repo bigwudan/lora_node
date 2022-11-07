@@ -264,10 +264,11 @@ void HW_int(void)
 		FlagStatus res = RESET;
 		res = PWR_GetFlagStatus(PWR_FLAG_WU);
 		if(res == RESET){
-			printf("HW_int\n");
+			printf("111HW_int\n");
 			rtc_set();
 		}else{
-			printf("wakeup\n");
+			printf("11wakeup\n");
+			//rtc_set();
 		}
 		
 }
@@ -319,7 +320,8 @@ int main(void){
 	rtc_get_time(&RTC_TimeStructure);
 	printf("main[%d][%d][%d]\n", RTC_TimeStructure.RTC_Hours, RTC_TimeStructure.RTC_Minutes, RTC_TimeStructure.RTC_Seconds);	
 	Delay_Ms(5000);
-	printf("join standby\n");
+	
+	RTC_Alarm_set_min(1);
 	PWR_EnterSTANDBYMode();		
 	lora_node_init(); //初始化
 	while(1){

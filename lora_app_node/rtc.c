@@ -60,7 +60,7 @@ void rtc_set(void)
   RTC_GetTime(RTC_HourFormat_12,&RTC_TimeStructure);//?????????
 #endif
 
-	RTC_Alarm_Config();
+	//RTC_Alarm_Config();
 }
 
 
@@ -163,7 +163,7 @@ void RTC_Alarm_Config(void)
 	NVIC_InitTypeDef NVIC_InitStructure; 
 	EXTI_InitTypeDef EXTI_InitStructure;
 	RTC_TimeTypeDef   RTC_TimeStructure;
-	RTC_AlarmTypeDef RTC_AlarmStructure;
+	RTC_AlarmTypeDef RTC_AlarmStructure = {0};
 	
 	/* EXTI configuration *******************************************************/
 //	EXTI_ClearITPendingBit(EXTI_Line17);
@@ -183,18 +183,83 @@ void RTC_Alarm_Config(void)
 	RTC_AlarmCmd(RTC_Alarm_A,DISABLE);
   
 	RTC_GetTime(RTC_Format_BIN, &RTC_TimeStructure);
+	
+	RTC_AlarmStructure.RTC_AlarmTime.RTC_Minutes = 5;
+#if 0		
 	RTC_AlarmStructure.RTC_AlarmTime.RTC_H12=RTC_H12_AM;
 	RTC_AlarmStructure.RTC_AlarmTime.RTC_Hours=RTC_TimeStructure.RTC_Hours;
 	RTC_AlarmStructure.RTC_AlarmTime.RTC_Minutes=RTC_TimeStructure.RTC_Minutes;
 	RTC_AlarmStructure.RTC_AlarmTime.RTC_Seconds=RTC_TimeStructure.RTC_Seconds+5;
+
 	if(RTC_AlarmStructure.RTC_AlarmTime.RTC_Seconds >=60)
 		RTC_AlarmStructure.RTC_AlarmTime.RTC_Seconds-=60;
  	RTC_AlarmStructure.RTC_AlarmDateWeekDay = 0x31;
  	RTC_AlarmStructure.RTC_AlarmDateWeekDaySel = RTC_AlarmDateWeekDaySel_Date;
- 	RTC_AlarmStructure.RTC_AlarmMask = RTC_AlarmMask_DateWeekDay | RTC_AlarmMask_Hours|RTC_AlarmMask_Minutes;  
+#endif	
+ 	RTC_AlarmStructure.RTC_AlarmMask = RTC_AlarmMask_DateWeekDay | RTC_AlarmMask_Hours|RTC_AlarmMask_Seconds;  
  	RTC_SetAlarm(RTC_Format_BIN, RTC_Alarm_A, &RTC_AlarmStructure);
 	RTC_ClearITPendingBit(RTC_IT_ALRA); 
 	
 	RTC_ITConfig(RTC_IT_ALRA, ENABLE);
 	RTC_AlarmCmd(RTC_Alarm_A, ENABLE);/* Enable the alarm */
+} 
+
+/*
+闹铃
+@param min 分钟
+*/
+void RTC_Alarm_set_min(uint8_t min)
+{
+	NVIC_InitTypeDef NVIC_InitStructure; 
+	EXTI_InitTypeDef EXTI_InitStructure;
+	RTC_TimeTypeDef   RTC_TimeStructure;
+	RTC_AlarmTypeDef RTC_AlarmStructure = {0};
+	
+	/* EXTI configuration *******************************************************/
+//	EXTI_ClearITPendingBit(EXTI_Line17);
+//	EXTI_InitStructure.EXTI_Line = EXTI_Line17;
+//	EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
+//	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;
+//	EXTI_InitStructure.EXTI_LineCmd = ENABLE;
+//	EXTI_Init(&EXTI_InitStructure);
+ 
+	/* Enable the RTC Wakeup Interrupt */
+	NVIC_InitStructure.NVIC_IRQChannel = RTC_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPriority = 1;
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&NVIC_InitStructure);
+ 
+	PWR_BackupAccessCmd(ENABLE);
+	RTC_WriteProtectionCmd(DISABLE);	
+	
+	//清理中断
+	RTC_ClearITPendingBit(RTC_IT_ALRA); 
+	RTC_ClearITPendingBit(RTC_IT_WUT);
+	RTC_ClearFlag(RTC_FLAG_ALRAF);
+	
+	PWR_ClearFlag(PWR_FLAG_WU);
+//	PWR_ClearFlag(PWR_FLAG_SB);	
+	
+	
+	RTC_ITConfig( RTC_IT_ALRA, DISABLE );  
+	RTC_AlarmCmd(RTC_Alarm_A,DISABLE);
+  
+	RTC_GetTime(RTC_Format_BIN, &RTC_TimeStructure);
+	
+	RTC_AlarmStructInit(&RTC_AlarmStructure);
+	
+	RTC_AlarmStructure.RTC_AlarmTime.RTC_Minutes = RTC_TimeStructure.RTC_Minutes + min;
+	if(RTC_AlarmStructure.RTC_AlarmTime.RTC_Minutes >=60)
+		RTC_AlarmStructure.RTC_AlarmTime.RTC_Minutes-=60;
+	printf("stand[%d]\n", RTC_AlarmStructure.RTC_AlarmTime.RTC_Minutes);	
+ 	RTC_AlarmStructure.RTC_AlarmMask = RTC_AlarmMask_DateWeekDay | RTC_AlarmMask_Hours|RTC_AlarmMask_Seconds;  
+ 	RTC_SetAlarm(RTC_Format_BIN, RTC_Alarm_A, &RTC_AlarmStructure);
+	
+
+
+	
+	RTC_ITConfig(RTC_IT_ALRA, ENABLE);
+	RTC_AlarmCmd(RTC_Alarm_A, ENABLE);/* Enable the alarm */
+	RTC_WriteProtectionCmd(ENABLE);
+	PWR_BackupAccessCmd(DISABLE);
 } 
