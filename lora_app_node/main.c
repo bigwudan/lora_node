@@ -260,7 +260,16 @@ void HW_int(void)
     SPI2_Int();
 		UartInit(9600);
 		timerInit();
-		rtc_set();
+	
+		FlagStatus res = RESET;
+		res = PWR_GetFlagStatus(PWR_FLAG_WU);
+		if(res == RESET){
+			printf("HW_int\n");
+			rtc_set();
+		}else{
+			printf("wakeup\n");
+		}
+		
 }
 
 
@@ -306,7 +315,9 @@ void check_cad(){
 int main(void){
 	RTC_TimeTypeDef	  RTC_TimeStructure;
 	HW_int();//吴丹
-	printf("m11ain>stepp>>>>>>>>>>>>>>>>>\n");
+
+	rtc_get_time(&RTC_TimeStructure);
+	printf("main[%d][%d][%d]\n", RTC_TimeStructure.RTC_Hours, RTC_TimeStructure.RTC_Minutes, RTC_TimeStructure.RTC_Seconds);	
 	Delay_Ms(5000);
 	printf("join standby\n");
 	PWR_EnterSTANDBYMode();		
