@@ -22,6 +22,7 @@ void UartInit(uint32_t BaudRate)
 
         GPIO_InitTypeDef  GPIO_InitStructure;
         USART_InitTypeDef USART_InitStructure;
+				NVIC_InitTypeDef NVIC_InitStruct;
                 
         RCC_AHBPeriphClockCmd( USER_UART_GPIO_CLK, ENABLE);
         RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE );
@@ -46,7 +47,17 @@ void UartInit(uint32_t BaudRate)
         USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
         USART_Init(USART1, &USART_InitStructure); 
 
+				USART_ITConfig(USART1,USART_IT_RXNE,ENABLE);  
+
+
+
         USART_Cmd(USART1, ENABLE);
+
+
+				NVIC_InitStruct.NVIC_IRQChannel = USART1_IRQn;
+				NVIC_InitStruct.NVIC_IRQChannelPriority = 0x02;
+				NVIC_InitStruct.NVIC_IRQChannelCmd = ENABLE;
+				NVIC_Init(&NVIC_InitStruct);
 
 		}			
 

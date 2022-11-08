@@ -311,7 +311,7 @@ void check_cad(){
 	return ;
 }
 
-
+extern uint16_t rx_data;
 
 int main(void){
 	RTC_TimeTypeDef	  RTC_TimeStructure;
@@ -322,13 +322,14 @@ int main(void){
 	Delay_Ms(5000);
 	
 	RTC_Alarm_set_min(1);
-	PWR_EnterSTANDBYMode();		
+	//PWR_EnterSTANDBYMode();		
 	lora_node_init(); //初始化
 	while(1){
 		Radio.IrqProcess( ); // Process Radio IRQ
 		lora_node_task();		
 		rtc_get_time(&RTC_TimeStructure);
-		printf("xxxxx[%d][%d][%d]\n", RTC_TimeStructure.RTC_Hours, RTC_TimeStructure.RTC_Minutes, RTC_TimeStructure.RTC_Seconds);
+		printf("rec[%02X]\n",rx_data);
+		//printf("xxxxx[%d][%d][%d]\n", RTC_TimeStructure.RTC_Hours, RTC_TimeStructure.RTC_Minutes, RTC_TimeStructure.RTC_Seconds);
 	}
 }
 
