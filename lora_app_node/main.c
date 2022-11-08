@@ -20,6 +20,8 @@ Maintainer: Miguel Luis and Gregory Cristian
 
 #include "lora_common.h"
 
+#include "operate_flash.h"
+
 /**************************************************************************************************************************************
 Demo ????  EnableMaster=true  ????,???????"PING"????????,?????????"PONG"??LED??
 
@@ -328,7 +330,18 @@ int main(void){
 		Radio.IrqProcess( ); // Process Radio IRQ
 		lora_node_task();		
 		rtc_get_time(&RTC_TimeStructure);
-		printf("rec[%02X]\n",rx_data);
+			
+		if(rx_data >0){
+			printf("rec[%02X]\n",rx_data);
+			if(rx_data == 0x01){
+				operate_flash_write(0x22);
+			}else{
+				printf("read_flash[%02X]\n", operate_flash_read());
+			}
+			rx_data = 0;
+		}
+		
+		
 		//printf("xxxxx[%d][%d][%d]\n", RTC_TimeStructure.RTC_Hours, RTC_TimeStructure.RTC_Minutes, RTC_TimeStructure.RTC_Seconds);
 	}
 }

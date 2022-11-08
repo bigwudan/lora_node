@@ -597,6 +597,11 @@
               <FileType>1</FileType>
               <FilePath>..\rtc.c</FilePath>
             </File>
+            <File>
+              <FileName>operate_flash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\operate_flash.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
