@@ -1,0 +1,505 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.30.3.8024/W32 for ARM        13/Mar/2021  17:42:41
+# Copyright 1999-2014 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  
+#        E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\Libraries\STM32F0xx_StdPeriph_Driver\src\stm32f0xx_syscfg.c
+#    Command line =  
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\Libraries\STM32F0xx_StdPeriph_Driver\src\stm32f0xx_syscfg.c"
+#        -D STM32F030 -D USE_STDPERIPH_DRIVER -lcN
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\STM32F030\List\" -o
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\STM32F030\Obj\" --no_cse --no_unroll --no_inline
+#        --no_code_motion --no_tbaa --no_clustering --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M0 -e --fpu=None --dlib_config
+#        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        7.0\arm\INC\c\DLib_Config_Full.h" -I
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\..\Libraries\STM32F0xx_StdPeriph_Driver\inc\" -I
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\..\" -I
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\..\Radio\inc\" -Ol -I "C:\Program Files (x86)\IAR
+#        Systems\Embedded Workbench 7.0\arm\CMSIS\Include\"
+#    List file    =  
+#        E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\STM32F030\List\stm32f0xx_syscfg.lst
+#    Object file  =  
+#        E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\STM32F030\Obj\stm32f0xx_syscfg.o
+#
+###############################################################################
+
+E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0  LLCC68\LLCC68 Easy Demo v1.0\Libraries\STM32F0xx_StdPeriph_Driver\src\stm32f0xx_syscfg.c
+      1          /**
+      2            ******************************************************************************
+      3            * @file    stm32f0xx_syscfg.c
+      4            * @author  MCD Application Team
+      5            * @version V1.5.0
+      6            * @date    05-December-2014
+      7            * @brief   This file provides firmware functions to manage the following 
+      8            *          functionalities of the SYSCFG peripheral:
+      9            *           + Remapping the memory mapped at 0x00000000  
+     10            *           + Remapping the DMA channels
+     11            *           + Enabling I2C fast mode plus driving capability for I2C pins   
+     12            *           + Configuring the EXTI lines connection to the GPIO port
+     13            *           + Configuring the CFGR2 features (Connecting some internal signal
+     14            *             to the break input of TIM1)
+     15            *   
+     16            *  @verbatim
+     17           ===============================================================================
+     18                               ##### How to use this driver #####
+     19           ===============================================================================
+     20              [..] 
+     21                         The SYSCFG registers can be accessed only when the SYSCFG 
+     22                         interface APB clock is enabled.
+     23                         To enable SYSCFG APB clock use:
+     24                         RCC_APBPeriphClockCmd(RCC_APBPeriph_SYSCFG, ENABLE).
+     25            *  @endverbatim
+     26            *
+     27            ******************************************************************************
+     28            * @attention
+     29            *
+     30            * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
+     31            *
+     32            * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
+     33            * You may not use this file except in compliance with the License.
+     34            * You may obtain a copy of the License at:
+     35            *
+     36            *        http://www.st.com/software_license_agreement_liberty_v2
+     37            *
+     38            * Unless required by applicable law or agreed to in writing, software 
+     39            * distributed under the License is distributed on an "AS IS" BASIS, 
+     40            * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     41            * See the License for the specific language governing permissions and
+     42            * limitations under the License.
+     43            *
+     44            ******************************************************************************
+     45            */
+     46          
+     47          /* Includes ------------------------------------------------------------------*/
+     48          #include "stm32f0xx_syscfg.h"
+     49          
+     50          /** @addtogroup STM32F0xx_StdPeriph_Driver
+     51            * @{
+     52            */
+     53          
+     54          /** @defgroup SYSCFG 
+     55            * @brief SYSCFG driver modules
+     56            * @{
+     57            */ 
+     58          
+     59          /* Private typedef -----------------------------------------------------------*/
+     60          /* Private define ------------------------------------------------------------*/
+     61          /* Private macro -------------------------------------------------------------*/
+     62          /* Private variables ---------------------------------------------------------*/
+     63          /* Private function prototypes -----------------------------------------------*/
+     64          /* Private functions ---------------------------------------------------------*/
+     65          
+     66          /** @defgroup SYSCFG_Private_Functions
+     67            * @{
+     68            */ 
+     69          
+     70          /** @defgroup SYSCFG_Group1 SYSCFG Initialization and Configuration functions
+     71           *  @brief   SYSCFG Initialization and Configuration functions 
+     72           *
+     73          @verbatim
+     74           ===============================================================================
+     75                  ##### SYSCFG Initialization and Configuration functions #####
+     76           ===============================================================================
+     77          
+     78          @endverbatim
+     79            * @{
+     80            */
+     81          
+     82          /**
+     83            * @brief  Deinitializes the SYSCFG registers to their default reset values.
+     84            * @param  None
+     85            * @retval None
+     86            * @note   MEM_MODE bits are not affected by APB reset.
+     87            * @note   MEM_MODE bits took the value from the user option bytes.
+     88            * @note   CFGR2 register is not affected by APB reset.
+     89            * @note   CLABBB configuration bits are locked when set.
+     90            * @note   To unlock the configuration, perform a system reset.
+     91            */
+     92          void SYSCFG_DeInit(void)
+     93          {
+     94            /* Set SYSCFG_CFGR1 register to reset value without affecting MEM_MODE bits */
+     95            SYSCFG->CFGR1 &= SYSCFG_CFGR1_MEM_MODE;
+     96            /* Set EXTICRx registers to reset value */
+     97            SYSCFG->EXTICR[0] = 0;
+     98            SYSCFG->EXTICR[1] = 0;
+     99            SYSCFG->EXTICR[2] = 0;
+    100            SYSCFG->EXTICR[3] = 0;
+    101            /* Set CFGR2 register to reset value: clear SRAM parity error flag */
+    102            SYSCFG->CFGR2 |= (uint32_t) SYSCFG_CFGR2_SRAM_PE;
+    103          }
+    104          
+    105          /**
+    106            * @brief  Configures the memory mapping at address 0x00000000.
+    107            * @param  SYSCFG_MemoryRemap: selects the memory remapping.
+    108            *          This parameter can be one of the following values:
+    109            *            @arg SYSCFG_MemoryRemap_Flash: Main Flash memory mapped at 0x00000000  
+    110            *            @arg SYSCFG_MemoryRemap_SystemMemory: System Flash memory mapped at 0x00000000
+    111            *            @arg SYSCFG_MemoryRemap_SRAM: Embedded SRAM mapped at 0x00000000
+    112            * @retval None
+    113            */
+    114          void SYSCFG_MemoryRemapConfig(uint32_t SYSCFG_MemoryRemap)
+    115          {
+    116            uint32_t tmpctrl = 0;
+    117          
+    118            /* Check the parameter */
+    119            assert_param(IS_SYSCFG_MEMORY_REMAP(SYSCFG_MemoryRemap));
+    120          
+    121            /* Get CFGR1 register value */
+    122            tmpctrl = SYSCFG->CFGR1;
+    123          
+    124            /* Clear MEM_MODE bits */
+    125            tmpctrl &= (uint32_t) (~SYSCFG_CFGR1_MEM_MODE);
+    126          
+    127            /* Set the new MEM_MODE bits value */
+    128            tmpctrl |= (uint32_t) SYSCFG_MemoryRemap;
+    129          
+    130            /* Set CFGR1 register with the new memory remap configuration */
+    131            SYSCFG->CFGR1 = tmpctrl;
+    132          }
+    133          
+    134          /**
+    135            * @brief  Configure the DMA channels remapping.
+    136            * @param  SYSCFG_DMARemap: selects the DMA channels remap.
+    137            *          This parameter can be one of the following values:
+    138            *            @arg SYSCFG_DMARemap_TIM17: Remap TIM17 DMA requests from channel1 to channel2
+    139            *            @arg SYSCFG_DMARemap_TIM16: Remap TIM16 DMA requests from channel3 to channel4
+    140            *            @arg SYSCFG_DMARemap_USART1Rx: Remap USART1 Rx DMA requests from channel3 to channel5
+    141            *            @arg SYSCFG_DMARemap_USART1Tx: Remap USART1 Tx DMA requests from channel2 to channel4
+    142            *            @arg SYSCFG_DMARemap_ADC1: Remap ADC1 DMA requests from channel1 to channel2
+    143            * @param  NewState: new state of the DMA channel remapping. 
+    144            *         This parameter can be: ENABLE or DISABLE.
+    145            * @note   When enabled, DMA channel of the selected peripheral is remapped
+    146            * @note   When disabled, Default DMA channel is mapped to the selected peripheral
+    147            * @note   By default TIM17 DMA requests is mapped to channel 1, 
+    148            *         use SYSCFG_DMAChannelRemapConfig(SYSCFG_DMARemap_TIM17, Enable) to remap
+    149            *         TIM17 DMA requests to channel 2 and use
+    150            *         SYSCFG_DMAChannelRemapConfig(SYSCFG_DMARemap_TIM17, Disable) to map
+    151            *         TIM17 DMA requests to channel 1 (default mapping)
+    152            * @note   This function is only used for STM32F030, STM32F031, STM32F042, STM32F072 and STM32F051 devices.   
+    153            * @retval None
+    154            */
+    155          void SYSCFG_DMAChannelRemapConfig(uint32_t SYSCFG_DMARemap, FunctionalState NewState)
+    156          {
+    157            /* Check the parameters */
+    158            assert_param(IS_SYSCFG_DMA_REMAP(SYSCFG_DMARemap));
+    159            assert_param(IS_FUNCTIONAL_STATE(NewState));
+    160          
+    161            if (NewState != DISABLE)
+    162            {
+    163              /* Remap the DMA channel */
+    164              SYSCFG->CFGR1 |= (uint32_t)SYSCFG_DMARemap;
+    165            }
+    166            else
+    167            {
+    168              /* use the default DMA channel mapping */
+    169              SYSCFG->CFGR1 &= (uint32_t)(~SYSCFG_DMARemap);
+    170            }
+    171          }
+    172          
+    173          /**
+    174            * @brief  Configure the I2C fast mode plus driving capability.
+    175            * @param  SYSCFG_I2CFastModePlus: selects the pin.
+    176            *          This parameter can be one of the following values:
+    177            *            @arg SYSCFG_I2CFastModePlus_PB6: Configure fast mode plus driving capability for PB6
+    178            *            @arg SYSCFG_I2CFastModePlus_PB7: Configure fast mode plus driving capability for PB7
+    179            *            @arg SYSCFG_I2CFastModePlus_PB8: Configure fast mode plus driving capability for PB8
+    180            *            @arg SYSCFG_I2CFastModePlus_PB9: Configure fast mode plus driving capability for PB9
+    181            *            @arg SYSCFG_I2CFastModePlus_PA9: Configure fast mode plus driving capability for PA9 (only for STM32F031 and STM32F030 devices)
+    182            *            @arg SYSCFG_I2CFastModePlus_PA10: Configure fast mode plus driving capability for PA10 (only for STM32F031 and STM32F030 devices)
+    183            *            @arg SYSCFG_I2CFastModePlus_I2C1: Configure fast mode plus driving capability for PB10, PB11, PF6 and PF7(only for STM32F031 and STM32F030 devices)
+    184            *            @arg SYSCFG_I2CFastModePlus_I2C2: Configure fast mode plus driving capability for I2C2 pins, available only for STM32F072 devices
+    185            *                
+    186            * @param  NewState: new state of the DMA channel remapping. 
+    187            *         This parameter can be:  ENABLE or DISABLE.
+    188            * @note   ENABLE: Enable fast mode plus driving capability for selected I2C pin
+    189            * @note   DISABLE: Disable fast mode plus driving capability for selected I2C pin
+    190            * @note  For I2C1, fast mode plus driving capability can be enabled on all selected
+    191            *        I2C1 pins using SYSCFG_I2CFastModePlus_I2C1 parameter or independently
+    192            *        on each one of the following pins PB6, PB7, PB8 and PB9.
+    193            * @note  For remaining I2C1 pins (PA14, PA15...) fast mode plus driving capability
+    194            *        can be enabled only by using SYSCFG_I2CFastModePlus_I2C1 parameter.
+    195            * @note  For all I2C2 pins fast mode plus driving capability can be enabled
+    196            *        only by using SYSCFG_I2CFastModePlus_I2C2 parameter.
+    197            * @retval None
+    198            */
+    199          void SYSCFG_I2CFastModePlusConfig(uint32_t SYSCFG_I2CFastModePlus, FunctionalState NewState)
+    200          {
+    201            /* Check the parameters */
+    202            assert_param(IS_SYSCFG_I2C_FMP(SYSCFG_I2CFastModePlus));
+    203            assert_param(IS_FUNCTIONAL_STATE(NewState));
+    204          
+    205            if (NewState != DISABLE)
+    206            {
+    207              /* Enable fast mode plus driving capability for selected pin */
+    208              SYSCFG->CFGR1 |= (uint32_t)SYSCFG_I2CFastModePlus;
+    209            }
+    210            else
+    211            {
+    212              /* Disable fast mode plus driving capability for selected pin */
+    213              SYSCFG->CFGR1 &= (uint32_t)(~SYSCFG_I2CFastModePlus);
+    214            }
+    215          }
+    216          
+    217          /** @brief  select the modulation envelope source 
+    218            * @param SYSCFG_IRDAEnv: select the envelope source. 
+    219            *        This parameter can be a value 
+    220            *            @arg SYSCFG_IRDA_ENV_SEL_TIM16
+    221            *            @arg SYSCFG_IRDA_ENV_SEL_USART1
+    222            *            @arg SYSCFG_IRDA_ENV_SEL_USART4
+    223            * @retval None      
+    224            */
+    225          void SYSCFG_IRDAEnvSelection(uint32_t SYSCFG_IRDAEnv)
+    226          {
+    227            /* Check the parameters */
+    228            assert_param(IS_SYSCFG_IRDA_ENV(SYSCFG_IRDAEnv));
+    229            
+    230            SYSCFG->CFGR1 &= ~(SYSCFG_CFGR1_IRDA_ENV_SEL);
+    231            SYSCFG->CFGR1 |= (SYSCFG_IRDAEnv);
+    232          }
+    233          
+    234          /**
+    235            * @brief  Selects the GPIO pin used as EXTI Line.
+    236            * @param  EXTI_PortSourceGPIOx: selects the GPIO port to be used as source 
+    237            *                               for EXTI lines where x can be (A, B, C, D, E or F).
+    238            * @note   GPIOE is available only for STM32F072.
+    239            * @note   GPIOD is not available for STM32F031.    
+    240            * @param  EXTI_PinSourcex: specifies the EXTI line to be configured.
+    241            * @note   This parameter can be EXTI_PinSourcex where x can be:
+    242            *         For STM32F051 and STM32F030: (0..15) for GPIOA, GPIOB, GPIOC, (2) for GPIOD and (0..1, 4..7) for GIIOF.
+    243            *         For STM32F072: (0..15) for GPIOA, GPIOB, GPIOC, GPIOD, GPIOE, (0..10) for GPIOF.
+    244            *         For STM32F031: (0..15) for GPIOA, GPIOB, (13..15) for GPIOC and (0..1, 6..7) for GPIOF.
+    245            * @retval None
+    246            */
+    247          void SYSCFG_EXTILineConfig(uint8_t EXTI_PortSourceGPIOx, uint8_t EXTI_PinSourcex)
+    248          {
+    249            uint32_t tmp = 0x00;
+    250          
+    251            /* Check the parameters */
+    252            assert_param(IS_EXTI_PORT_SOURCE(EXTI_PortSourceGPIOx));
+    253            assert_param(IS_EXTI_PIN_SOURCE(EXTI_PinSourcex));
+    254            
+    255            tmp = ((uint32_t)0x0F) << (0x04 * (EXTI_PinSourcex & (uint8_t)0x03));
+    256            SYSCFG->EXTICR[EXTI_PinSourcex >> 0x02] &= ~tmp;
+    257            SYSCFG->EXTICR[EXTI_PinSourcex >> 0x02] |= (((uint32_t)EXTI_PortSourceGPIOx) << (0x04 * (EXTI_PinSourcex & (uint8_t)0x03)));
+    258          }
+    259          
+    260          /**
+    261            * @brief  check ISR wrapper: Allow to determine interrupt source per line .
+    262            * @param  IT_Source: specifies the interrupt source to check.
+    263            *          This parameter can be one of the following values:
+    264            *            @arg ITLINE_EWDG                       EWDG has expired 
+    265            *            @arg ITLINE_PVDOUT                     Power voltage detection Interrupt 
+    266            *            @arg ITLINE_VDDIO2                     VDDIO2 Interrupt
+    267            *            @arg ITLINE_RTC_WAKEUP                 RTC WAKEUP -> exti[20] Interrupt 
+    268            *            @arg ITLINE_RTC_TSTAMP                 RTC Time Stamp -> exti[19] interrupt 
+    269            *            @arg ITLINE_RTC_ALRA                   RTC Alarm -> exti[17] interrupt
+    270            *            @arg ITLINE_FLASH_ITF                  Flash ITF Interrupt
+    271            *            @arg ITLINE_CRS                        CRS Interrupt 
+    272            *            @arg ITLINE_CLK_CTRL                   CLK Control Interrupt 
+    273            *            @arg ITLINE_EXTI0                      External Interrupt 0 
+    274            *            @arg ITLINE_EXTI1                      External Interrupt 1 
+    275            *            @arg ITLINE_EXTI2                      External Interrupt 2 
+    276            *            @arg ITLINE_EXTI3                      External Interrupt 3 
+    277            *            @arg ITLINE_EXTI4                      External Interrupt 4 
+    278            *            @arg ITLINE_EXTI5                      External Interrupt 5 
+    279            *            @arg ITLINE_EXTI6                      External Interrupt 6 
+    280            *            @arg ITLINE_EXTI7                      External Interrupt 7 
+    281            *            @arg ITLINE_EXTI8                      External Interrupt 8 
+    282            *            @arg ITLINE_EXTI9                      External Interrupt 9 
+    283            *            @arg ITLINE_EXTI10                     External Interrupt 10 
+    284            *            @arg ITLINE_EXTI11                     External Interrupt 11 
+    285            *            @arg ITLINE_EXTI12                     External Interrupt 12 
+    286            *            @arg ITLINE_EXTI13                     External Interrupt 13 
+    287            *            @arg ITLINE_EXTI14                     External Interrupt 14 
+    288            *            @arg ITLINE_EXTI15                     External Interrupt 15 
+    289            *            @arg ITLINE_TSC_EOA                    Touch control EOA Interrupt 
+    290            *            @arg ITLINE_TSC_MCE                    Touch control MCE Interrupt 
+    291            *            @arg ITLINE_DMA1_CH1                   DMA1 Channel 1 Interrupt 
+    292            *            @arg ITLINE_DMA1_CH2                   DMA1 Channel 2 Interrupt 
+    293            *            @arg ITLINE_DMA1_CH3                   DMA1 Channel 3 Interrupt 
+    294            *            @arg ITLINE_DMA2_CH1                   DMA2 Channel 1 Interrupt 
+    295            *            @arg ITLINE_DMA2_CH2                   DMA2 Channel 2 Interrupt 
+    296            *            @arg ITLINE_DMA1_CH4                   DMA1 Channel 4 Interrupt  
+    297            *            @arg ITLINE_DMA1_CH5                   DMA1 Channel 5 Interrupt 
+    298            *            @arg ITLINE_DMA1_CH6                   DMA1 Channel 6 Interrupt 
+    299            *            @arg ITLINE_DMA1_CH7                   DMA1 Channel 7 Interrupt 
+    300            *            @arg ITLINE_DMA2_CH3                   DMA2 Channel 3 Interrupt 
+    301            *            @arg ITLINE_DMA2_CH4                   DMA2 Channel 4 Interrupt 
+    302            *            @arg ITLINE_DMA2_CH5                   DMA2 Channel 5 Interrupt 
+    303            *            @arg ITLINE_ADC                        ADC Interrupt 
+    304            *            @arg ITLINE_COMP1                      COMP1 Interrupt -> exti[21] 
+    305            *            @arg ITLINE_COMP2                      COMP2 Interrupt -> exti[21] 
+    306            *            @arg ITLINE_TIM1_BRK                   TIM1 BRK Interrupt 
+    307            *            @arg ITLINE_TIM1_UPD                   TIM1 UPD Interrupt 
+    308            *            @arg ITLINE_TIM1_TRG                   TIM1 TRG Interrupt 
+    309            *            @arg ITLINE_TIM1_CCU                   TIM1 CCU Interrupt 
+    310            *            @arg ITLINE_TIM1_CC                    TIM1 CC Interrupt 
+    311            *            @arg ITLINE_TIM2                       TIM2 Interrupt 
+    312            *            @arg ITLINE_TIM3                       TIM3 Interrupt 
+    313            *            @arg ITLINE_DAC                        DAC Interrupt 
+    314            *            @arg ITLINE_TIM6                       TIM6 Interrupt 
+    315            *            @arg ITLINE_TIM7                       TIM7 Interrupt 
+    316            *            @arg ITLINE_TIM14                      TIM14 Interrupt 
+    317            *            @arg ITLINE_TIM15                      TIM15 Interrupt 
+    318            *            @arg ITLINE_TIM16                      TIM16 Interrupt 
+    319            *            @arg ITLINE_TIM17                      TIM17 Interrupt 
+    320            *            @arg ITLINE_I2C1                       I2C1 Interrupt -> exti[23] 
+    321            *            @arg ITLINE_I2C2                       I2C2 Interrupt 
+    322            *            @arg ITLINE_SPI1                       I2C1 Interrupt -> exti[23] 
+    323            *            @arg ITLINE_SPI2                       SPI1 Interrupt 
+    324            *            @arg ITLINE_USART1                     USART1 GLB Interrupt -> exti[25] 
+    325            *            @arg ITLINE_USART2                     USART2 GLB Interrupt -> exti[26] 
+    326            *            @arg ITLINE_USART3                     USART3 Interrupt 
+    327            *            @arg ITLINE_USART4                     USART4 Interrupt 
+    328            *            @arg ITLINE_USART5                     USART5 Interrupt 
+    329            *            @arg ITLINE_USART6                     USART6 Interrupt 
+    330            *            @arg ITLINE_USART7                     USART7 Interrupt 
+    331            *            @arg ITLINE_USART8                     USART8 Interrupt 
+    332            *            @arg ITLINE_CAN                        CAN Interrupt 
+    333            *            @arg ITLINE_CEC                        CEC Interrupt 
+    334            * @retval The new state of IT_LINE_SR.
+    335            */
+    336          uint32_t  SYSCFG_GetPendingIT(uint32_t ITSourceLine)
+    337          {
+    338             assert_param(IS_SYSCFG_ITLINE(ITSourceLine));
+    339             return(SYSCFG->IT_LINE_SR[(ITSourceLine >> 0x18)] & (ITSourceLine & 0x00FFFFFF));
+    340          }
+    341          
+    342          /**
+    343            * @brief  Connect the selected parameter to the break input of TIM1.
+    344            * @note   The selected configuration is locked and can be unlocked by system reset
+    345            * @param  SYSCFG_Break: selects the configuration to be connected to break
+    346            *         input of TIM1
+    347            *          This parameter can be any combination of the following values:
+    348            *            @arg SYSCFG_Break_PVD: Connects the PVD event to the Break Input of TIM1,, not available for  STM32F030 devices.
+    349            *            @arg SYSCFG_Break_SRAMParity: Connects the SRAM_PARITY error signal to the Break Input of TIM1 .
+    350            *            @arg SYSCFG_Break_Lockup: Connects Lockup output of CortexM0 to the break input of TIM1.
+    351            * @retval None
+    352            */
+    353          void SYSCFG_BreakConfig(uint32_t SYSCFG_Break)
+    354          {
+    355            /* Check the parameter */
+    356            assert_param(IS_SYSCFG_LOCK_CONFIG(SYSCFG_Break));
+    357          
+    358            SYSCFG->CFGR2 |= (uint32_t) SYSCFG_Break;
+    359          }
+    360          
+    361          /**
+    362            * @brief  Checks whether the specified SYSCFG flag is set or not.
+    363            * @param  SYSCFG_Flag: specifies the SYSCFG flag to check. 
+    364            *          This parameter can be one of the following values:
+    365            *            @arg SYSCFG_FLAG_PE: SRAM parity error flag.
+    366            * @retval The new state of SYSCFG_Flag (SET or RESET).
+    367            */
+    368          FlagStatus SYSCFG_GetFlagStatus(uint32_t SYSCFG_Flag)
+    369          {
+    370            FlagStatus bitstatus = RESET;
+    371          
+    372            /* Check the parameter */
+    373            assert_param(IS_SYSCFG_FLAG(SYSCFG_Flag));
+    374          
+    375            /* Check the status of the specified SPI flag */
+    376            if ((SYSCFG->CFGR2 & SYSCFG_CFGR2_SRAM_PE) != (uint32_t)RESET)
+    377            {
+    378              /* SYSCFG_Flag is set */
+    379              bitstatus = SET;
+    380            }
+    381            else
+    382            {
+    383              /* SYSCFG_Flag is reset */
+    384              bitstatus = RESET;
+    385            }
+    386            /* Return the SYSCFG_Flag status */
+    387            return  bitstatus;
+    388          }
+    389          
+    390          /**
+    391            * @brief  Clear the selected SYSCFG flag.
+    392            * @param  SYSCFG_Flag: selects the flag to be cleared.
+    393            *          This parameter can be any combination of the following values:
+    394            *            @arg SYSCFG_FLAG_PE: SRAM parity error flag.
+    395            * @retval None
+    396            */
+    397          void SYSCFG_ClearFlag(uint32_t SYSCFG_Flag)
+    398          {
+    399            /* Check the parameter */
+    400            assert_param(IS_SYSCFG_FLAG(SYSCFG_Flag));
+    401          
+    402            SYSCFG->CFGR2 |= (uint32_t) SYSCFG_Flag;
+    403          }
+    404          
+    405          /**
+    406            * @}
+    407            */
+    408          
+    409          /**
+    410            * @}
+    411            */ 
+    412          
+    413          /**
+    414            * @}
+    415            */ 
+    416          
+    417          /**
+    418            * @}
+    419            */ 
+    420          /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       0   SYSCFG_BreakConfig
+       0   SYSCFG_ClearFlag
+       4   SYSCFG_DMAChannelRemapConfig
+       0   SYSCFG_DeInit
+       8   SYSCFG_EXTILineConfig
+       4   SYSCFG_GetFlagStatus
+       0   SYSCFG_GetPendingIT
+       4   SYSCFG_I2CFastModePlusConfig
+       0   SYSCFG_IRDAEnvSelection
+       0   SYSCFG_MemoryRemapConfig
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable9
+       4  ??DataTable9_1
+       4  ??DataTable9_2
+       4  ??DataTable9_3
+       4  ??DataTable9_4
+       4  ??DataTable9_5
+       4  ??DataTable9_6
+      12  SYSCFG_BreakConfig
+      12  SYSCFG_ClearFlag
+      32  SYSCFG_DMAChannelRemapConfig
+      52  SYSCFG_DeInit
+      90  SYSCFG_EXTILineConfig
+      22  SYSCFG_GetFlagStatus
+      20  SYSCFG_GetPendingIT
+      32  SYSCFG_I2CFastModePlusConfig
+      24  SYSCFG_IRDAEnvSelection
+      20  SYSCFG_MemoryRemapConfig
+
+ 
+ 344 bytes in section .text
+ 
+ 344 bytes of CODE memory
+
+Errors: none
+Warnings: none

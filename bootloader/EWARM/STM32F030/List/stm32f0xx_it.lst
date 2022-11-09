@@ -1,0 +1,261 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.30.3.8024/W32 for ARM        13/Mar/2021  17:42:39
+# Copyright 1999-2014 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  
+#        E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\stm32f0xx_it.c
+#    Command line =  
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\stm32f0xx_it.c" -D STM32F030 -D USE_STDPERIPH_DRIVER -lcN
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\STM32F030\List\" -o
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\STM32F030\Obj\" --no_cse --no_unroll --no_inline
+#        --no_code_motion --no_tbaa --no_clustering --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M0 -e --fpu=None --dlib_config
+#        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        7.0\arm\INC\c\DLib_Config_Full.h" -I
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\..\Libraries\STM32F0xx_StdPeriph_Driver\inc\" -I
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\..\" -I
+#        "E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\..\Radio\inc\" -Ol -I "C:\Program Files (x86)\IAR
+#        Systems\Embedded Workbench 7.0\arm\CMSIS\Include\"
+#    List file    =  
+#        E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\STM32F030\List\stm32f0xx_it.lst
+#    Object file  =  
+#        E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0 LLCC68\LLCC68 Easy
+#        Demo v1.0\EWARM\STM32F030\Obj\stm32f0xx_it.o
+#
+###############################################################################
+
+E:\G\STM32F0_Andrew\STM32F0xx_StdPeriph_Lib_V1.5.0  LLCC68\LLCC68 Easy Demo v1.0\stm32f0xx_it.c
+      1          /**
+      2            ******************************************************************************
+      3            * @file    Project/STM32F0xx_StdPeriph_Templates/stm32f0xx_it.c 
+      4            * @author  MCD Application Team
+      5            * @version V1.5.0
+      6            * @date    05-December-2014
+      7            * @brief   Main Interrupt Service Routines.
+      8            *          This file provides template for all exceptions handler and 
+      9            *          peripherals interrupt service routine.
+     10            ******************************************************************************
+     11            * @attention
+     12            *
+     13            * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
+     14            *
+     15            * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
+     16            * You may not use this file except in compliance with the License.
+     17            * You may obtain a copy of the License at:
+     18            *
+     19            *        http://www.st.com/software_license_agreement_liberty_v2
+     20            *
+     21            * Unless required by applicable law or agreed to in writing, software 
+     22            * distributed under the License is distributed on an "AS IS" BASIS, 
+     23            * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     24            * See the License for the specific language governing permissions and
+     25            * limitations under the License.
+     26            *
+     27            ******************************************************************************
+     28            */
+     29          
+     30          /* Includes ------------------------------------------------------------------*/
+     31          #include "stm32f0xx_it.h"
+     32          #include "user.h"
+     33          
+     34          volatile  uint32_t TickCounter=0;
+     35          volatile  uint32_t ticktimer=0;
+     36          
+     37          /** @addtogroup Template_Project
+     38            * @{
+     39            */
+     40          
+     41          /* Private typedef -----------------------------------------------------------*/
+     42          /* Private define ------------------------------------------------------------*/
+     43          /* Private macro -------------------------------------------------------------*/
+     44          /* Private variables ---------------------------------------------------------*/
+     45          /* Private function prototypes -----------------------------------------------*/
+     46          /* Private functions ---------------------------------------------------------*/
+     47          
+     48          /******************************************************************************/
+     49          /*            Cortex-M0 Processor Exceptions Handlers                         */
+     50          /******************************************************************************/
+     51          
+     52          /**
+     53            * @brief  This function handles NMI exception.
+     54            * @param  None
+     55            * @retval None
+     56            */
+     57          void NMI_Handler(void)
+     58          {
+     59          }
+     60          
+     61          /**
+     62            * @brief  This function handles Hard Fault exception.
+     63            * @param  None
+     64            * @retval None
+     65            */
+     66          void HardFault_Handler(void)
+     67          {
+     68            /* Go to infinite loop when Hard Fault exception occurs */
+     69            while (1)
+     70            {
+     71            }
+     72          }
+     73          
+     74          /**
+     75            * @brief  This function handles SVCall exception.
+     76            * @param  None
+     77            * @retval None
+     78            */
+     79          void SVC_Handler(void)
+     80          {
+     81          }
+     82          
+     83          /**
+     84            * @brief  This function handles PendSVC exception.
+     85            * @param  None
+     86            * @retval None
+     87            */
+     88          void PendSV_Handler(void)
+     89          {
+     90          }
+     91          
+     92          /**
+     93            * @brief  This function handles SysTick Handler.
+     94            * @param  None
+     95            * @retval None
+     96            */
+     97          void SysTick_Handler(void)
+     98          {
+     99            
+    100            TickCounter++;
+    101            ticktimer++;
+    102          
+    103          }
+    104          
+    105          
+    106          
+    107          
+    108          /******************************************************************************/
+    109          /*                 STM32F0xx Peripherals Interrupt Handlers                   */
+    110          /*  Add here the Interrupt Handler for the used peripheral(s) (PPP), for the  */
+    111          /*  available peripheral interrupt handler's name please refer to the startup */
+    112          /*  file (startup_stm32f0xx.s).                                            */
+    113          /******************************************************************************/
+    114          
+    115          /**
+    116            * @brief  This function handles PPP interrupt request.
+    117            * @param  None
+    118            * @retval None
+    119            */
+    120          /*void PPP_IRQHandler(void)
+    121          {
+    122          }*/
+    123          
+    124          /**
+    125            * @}
+    126            */ 
+    127          
+    128          
+    129          /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+    130          
+    131          void USART1_IRQHandler(void)
+    132          {
+    133          
+    134          }
+    135          
+    136          void ADC1_IRQHandler(void)
+    137          {
+    138            
+    139          }
+    140          
+    141          void SPI2_IRQHandler(void)
+    142          {
+    143            
+    144          }
+    145          
+    146          void TIM14_IRQHandler(void)
+    147          {
+    148            if(TIM_GetITStatus(TIM14, TIM_IT_Update))
+    149            {
+    150              TIM_ClearITPendingBit(TIM14,TIM_IT_Update);
+    151           
+    152            }
+    153          }
+    154          
+    155          
+    156           /* * @brief  This function handles RTC interrupt request.
+    157            * @param  None
+    158            * @retval None
+    159            */
+    160          
+    161          
+    162          void EXTI0_1_IRQHandler(void)
+    163          {
+    164            if(EXTI_GetITStatus(EXTI_Line1) != RESET)
+    165            {
+    166              /* Clear the EXTI line 1 pending bit */
+    167              EXTI_ClearITPendingBit(EXTI_Line1);
+    168              
+    169              
+    170            }
+    171          }
+    172          
+    173          
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       0   ADC1_IRQHandler
+       8   EXTI0_1_IRQHandler
+         8   -> EXTI_ClearITPendingBit
+         8   -> EXTI_GetITStatus
+       4   HardFault_Handler
+       0   NMI_Handler
+       0   PendSV_Handler
+       0   SPI2_IRQHandler
+       0   SVC_Handler
+       0   SysTick_Handler
+       8   TIM14_IRQHandler
+         8   -> TIM_ClearITPendingBit
+         8   -> TIM_GetITStatus
+       0   USART1_IRQHandler
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable1
+       4  ??DataTable1_1
+       4  ??DataTable1_2
+       2  ADC1_IRQHandler
+      20  EXTI0_1_IRQHandler
+       4  HardFault_Handler
+       2  NMI_Handler
+       2  PendSV_Handler
+       2  SPI2_IRQHandler
+       2  SVC_Handler
+      22  SysTick_Handler
+      24  TIM14_IRQHandler
+       4  TickCounter
+       2  USART1_IRQHandler
+       4  ticktimer
+
+ 
+  8 bytes in section .bss
+ 94 bytes in section .text
+ 
+ 94 bytes of CODE memory
+  8 bytes of DATA memory
+
+Errors: none
+Warnings: none
