@@ -257,14 +257,14 @@ void check_cad(){
 #define USER_APP1_BEGIN_ADDR 0x8002000 //定义app1程序开始地址
 typedef void (*APP_FUNCTION )(void); //定义一个跳转函数模型？
 
-//void JumpApp(void)
-//{
-//	uint32_t jump_addr = *((__IO uint32_t *)(USER_APP1_BEGIN_ADDR + 4));//+4原因是前4个字节是复位函数
-//	APP_FUNCTION jump2app = (APP_FUNCTION)jump_addr;
+void JumpApp(void)
+{
+	uint32_t jump_addr = *((__IO uint32_t *)(USER_APP1_BEGIN_ADDR + 4));//+4原因是前4个字节是复位函数
+	APP_FUNCTION jump2app = (APP_FUNCTION)jump_addr;
 
-//	__set_MSP(*(__IO uint32_t*)USER_APP1_BEGIN_ADDR );
-//	jump2app();
-//}
+	__set_MSP(*(__IO uint32_t*)USER_APP1_BEGIN_ADDR );
+	jump2app();
+}
 
 
 int main(void){
@@ -275,11 +275,13 @@ int main(void){
 		//关闭中断
 	__disable_irq();
 	
-	uint32_t jump_addr = *((__IO uint32_t *)(USER_APP1_BEGIN_ADDR + 4));//+4原因是前4个字节是复位函数
-	APP_FUNCTION jump2app = (APP_FUNCTION)jump_addr;
+	JumpApp();
+	
+//	uint32_t jump_addr = *((__IO uint32_t *)(USER_APP1_BEGIN_ADDR + 4));//+4原因是前4个字节是复位函数
+//	APP_FUNCTION jump2app = (APP_FUNCTION)jump_addr;
 
-	__set_MSP(*(__IO uint32_t*)USER_APP1_BEGIN_ADDR );
-	jump2app();
+//	__set_MSP(*(__IO uint32_t*)USER_APP1_BEGIN_ADDR );
+//	jump2app();
 	
 	
 //	while(1){
