@@ -77,32 +77,25 @@ void HW_int(void)
 
 
 //用户程序存放地址（也是存放中断向量的flash地址）
-#define APPLICATION_ADDRESS ((uint32_t)0x08002000)
+#define APPLICATION_ADDRESS ((uint32_t)0x08005000)
  
-//RAM中的中断向量
-__IO uint32_t VectorTable[48] __attribute__((at(0x20000000)));
- 
+
 int main(void)
 {
- uint32_t i;
- 
- GPIO_InitTypeDef GPIO_InitStructure;
- 
- //从flash中复制中断向量到ram
- for(i = 0; i < 48; i++)
- {
-  VectorTable[i] = *(__IO uint32_t*)(APPLICATION_ADDRESS + (i<<2));
- }
- 
- //中断向量映射到RAM（开始地址处）
- SYSCFG_MemoryRemapConfig(SYSCFG_MemoryRemap_SRAM);
- 
+	memcpy((void*)0x20000000, (void*)APPLICATION_ADDRESS, 0xB4);
+	SYSCFG_MemoryRemapConfig(SYSCFG_MemoryRemap_SRAM);
+	/*user code begin*/
+	//正常用户程序
+	/*user code end*/
  //初始化时钟
  HW_int();
+	__enable_irq();
  while(1){
 		__NOP;
 	 printf("wudan\n");
-	 GPIO_WriteBit( LED1_PORT, LED1_PIN,Bit_SET);
- }
+	 //GPIO_WriteBit( LED1_PORT, LED1_PIN,Bit_SET);
+ }	
+	
 }
+
 

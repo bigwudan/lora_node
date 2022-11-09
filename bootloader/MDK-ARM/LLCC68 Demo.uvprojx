@@ -7,7 +7,7 @@
 
   <Targets>
     <Target>
-      <TargetName>bootloader</TargetName>
+      <TargetName>Demo</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
       <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
@@ -275,7 +275,7 @@
               <OCR_RVCT4>
                 <Type>1</Type>
                 <StartAddress>0x8000000</StartAddress>
-                <Size>0x2000</Size>
+                <Size>0x5000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
                 <Type>1</Type>
@@ -391,6 +391,51 @@
               <FileName>system_stm32f0xx.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Libraries\CMSIS\Device\ST\STM32F0xx\Source\Templates\system_stm32f0xx.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Radio</GroupName>
+          <Files>
+            <File>
+              <FileName>crc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Radio\src\crc.c</FilePath>
+            </File>
+            <File>
+              <FileName>radio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Radio\src\radio.c</FilePath>
+            </File>
+            <File>
+              <FileName>sx126x.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Radio\src\sx126x.c</FilePath>
+            </File>
+            <File>
+              <FileName>sx126x-board.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Radio\src\sx126x-board.c</FilePath>
+            </File>
+            <File>
+              <FileName>crc.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Radio\inc\crc.h</FilePath>
+            </File>
+            <File>
+              <FileName>radio.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Radio\inc\radio.h</FilePath>
+            </File>
+            <File>
+              <FileName>sx126x.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Radio\inc\sx126x.h</FilePath>
+            </File>
+            <File>
+              <FileName>sx126x-board.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Radio\inc\sx126x-board.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -552,10 +597,20 @@
               <FileType>1</FileType>
               <FilePath>..\rtc.c</FilePath>
             </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>lora_app</GroupName>
+          <Files>
             <File>
-              <FileName>operate_flash.c</FileName>
+              <FileName>lora_common.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\operate_flash.c</FilePath>
+              <FilePath>..\Radio\lora_app\common\lora_common.c</FilePath>
+            </File>
+            <File>
+              <FileName>lora_node.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Radio\lora_app\node\lora_node.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -408,11 +408,10 @@ ARM Macro Assembler    Page 7
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M0 --apcs=interw
 ork --depend=.\objects\startup_stm32f030.d -o.\objects\startup_stm32f030.o -I.\
-RTE\_bootloader -ID:\keil5_pack\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\S
-T\STM32F0xx\Include -ID:\keil5\ARM\CMSIS\Include --predefine="__UVISION_VERSION
- SETA 527" --predefine="STM32F030x8 SETA 1" --list=.\listings\startup_stm32f030
-.lst ..\Libraries\CMSIS\Device\ST\STM32F0xx\Source\Templates\arm\startup_stm32f
-030.s
+RTE\_Demo -ID:\keil5_pack\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM3
+2F0xx\Include -ID:\keil5\ARM\CMSIS\Include --predefine="__UVISION_VERSION SETA 
+527" --predefine="STM32F030x8 SETA 1" --list=.\listings\startup_stm32f030.lst .
+.\Libraries\CMSIS\Device\ST\STM32F0xx\Source\Templates\arm\startup_stm32f030.s
 
 
 

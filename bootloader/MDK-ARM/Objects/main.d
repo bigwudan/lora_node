@@ -1,5 +1,6 @@
 .\objects\main.o: ..\main.c
 .\objects\main.o: D:\keil5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\main.o: ..\user.h
 .\objects\main.o: ..\Libraries\CMSIS\Device\ST\STM32F0xx\Include\stm32f0xx.h
 .\objects\main.o: ..\Libraries\CMSIS\Include\core_cm0.h
 .\objects\main.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdint.h
@@ -31,3 +32,15 @@
 .\objects\main.o: ..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_usart.h
 .\objects\main.o: ..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_wwdg.h
 .\objects\main.o: ..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_misc.h
+.\objects\main.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\main.o: ..\gpio.h
+.\objects\main.o: ..\delay.h
+.\objects\main.o: ..\spi.h
+.\objects\main.o: ..\Radio\inc\radio.h
+.\objects\main.o: ..\Radio\inc\sx126x.h
+.\objects\main.o: ..\Radio\inc\sx126x-board.h
+.\objects\main.o: ..\Radio\inc\crc.h
+.\objects\main.o: ..\uart.h
+.\objects\main.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\main.o: ..\rtc.h
+.\objects\main.o: ..\Radio\lora_app\common\lora_common.h

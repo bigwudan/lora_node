@@ -20,10 +20,8 @@ static lora_send_data_tag _send_data_info;
 开始
 */
 lora_err_t lora_common_snd_beg(){
-#define HEAD 0x9F	
-	
 	memset(&_send_data_info, 0, sizeof(lora_send_data_tag));
-	_send_data_info.buf[_send_data_info.idx++] = HEAD;
+	_send_data_info.buf[_send_data_info.idx++] = 0x55;
 	_send_data_info.buf[_send_data_info.idx++] = 0x00;
 	return LORA_OK;
 }
