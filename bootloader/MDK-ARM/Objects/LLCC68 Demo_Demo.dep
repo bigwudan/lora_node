@@ -869,7 +869,7 @@ I (..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_usart.h)(0x54808D11)
 I (..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_wwdg.h)(0x54808D10)
 I (..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_misc.h)(0x54808D10)
 I (..\gpio.h)(0x5CA486B7)
-F (..\main.c)(0x636BC3A2)(--c99 -c --cpu Cortex-M0 -g -O0 --apcs=interwork --split_sections -I ..\Libraries\CMSIS\Device\ST\STM32F0xx\Include -I ..\Libraries\STM32F0xx_StdPeriph_Driver\inc -I ..\Radio\inc -I ..\Libraries\CMSIS\Include -I ..\. -I ..\Radio\lora_app\common -I ..\Radio\lora_app\node-I.\RTE\_Demo-ID:\keil5_pack\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include-ID:\keil5\ARM\CMSIS\Include-D__UVISION_VERSION="527" -DSTM32F030x8 -DSTM32F030 -DUSE_STDPERIPH_DRIVER-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
+F (..\main.c)(0x636BC7AA)(--c99 -c --cpu Cortex-M0 -g -O0 --apcs=interwork --split_sections -I ..\Libraries\CMSIS\Device\ST\STM32F0xx\Include -I ..\Libraries\STM32F0xx_StdPeriph_Driver\inc -I ..\Radio\inc -I ..\Libraries\CMSIS\Include -I ..\. -I ..\Radio\lora_app\common -I ..\Radio\lora_app\node-I.\RTE\_Demo-ID:\keil5_pack\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include-ID:\keil5\ARM\CMSIS\Include-D__UVISION_VERSION="527" -DSTM32F030x8 -DSTM32F030 -DUSE_STDPERIPH_DRIVER-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
 I (D:\keil5\ARM\ARMCC\include\string.h)(0x599ECD2C)
 I (..\user.h)(0x6360E051)
 I (..\Libraries\CMSIS\Device\ST\STM32F0xx\Include\stm32f0xx.h)(0x635FA0BA)

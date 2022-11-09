@@ -2166,9 +2166,9 @@ Memory Map of the image
 
   Image Entry point : 0x080000b5
 
-  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x000015a0, Max: 0x00005000, ABSOLUTE)
+  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x000015a0, Max: 0x00002000, ABSOLUTE)
 
-    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x0000156c, Max: 0x00005000, ABSOLUTE)
+    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x0000156c, Max: 0x00002000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -2324,7 +2324,7 @@ Image component sizes
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
        328          6          0          0          0       5115   gpio.o
-       436         48          0          0          0      10849   main.o
+       436         48          0          0          0      10825   main.o
        138          0          0          0          0        578   rtc.o
         80          4          0          0          0        467   spi.o
        116         56        180          0       1536        748   startup_stm32f030.o
@@ -2342,7 +2342,7 @@ Image component sizes
        120          6          0          0          0        575   uart.o
 
     ----------------------------------------------------------------------
-      4654        394        212         52       1536     284799   Object Totals
+      4654        394        212         52       1536     284775   Object Totals
          0          0         32          0          0          0   (incl. Generated)
         16          0          0          0          0          0   (incl. Padding)
 
@@ -2392,8 +2392,8 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      5272        410        212         52       1636     282699   Grand Totals
-      5272        410        212         52       1636     282699   ELF Image Totals
+      5272        410        212         52       1636     282675   Grand Totals
+      5272        410        212         52       1636     282675   ELF Image Totals
       5272        410        212         52          0          0   ROM Totals
 
 ==============================================================================

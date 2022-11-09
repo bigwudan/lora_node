@@ -254,7 +254,7 @@ void check_cad(){
 	return ;
 }
 
-#define USER_APP1_BEGIN_ADDR 0x8005000 //定义app1程序开始地址
+#define USER_APP1_BEGIN_ADDR 0x8002000 //定义app1程序开始地址
 typedef void (*APP_FUNCTION )(void); //定义一个跳转函数模型？
 
 //void JumpApp(void)
@@ -282,9 +282,9 @@ int main(void){
 	jump2app();
 	
 	
-	while(1){
-		__NOP;
-	}
+//	while(1){
+//		__NOP;
+//	}
 
 }
 

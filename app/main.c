@@ -77,7 +77,7 @@ void HW_int(void)
 
 
 //用户程序存放地址（也是存放中断向量的flash地址）
-#define APPLICATION_ADDRESS ((uint32_t)0x08005000)
+#define APPLICATION_ADDRESS ((uint32_t)0x08002000)
  
 
 int main(void)
