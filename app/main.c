@@ -110,8 +110,9 @@ int main(void)
  while(1){
 		__NOP;
 	 _Delay_Ms(2000);
-	 UartDMA_send(sx, sizeof(sx));
+	 //UartDMA_send(sx, sizeof(sx));
 	 _check_dma();
+	 printf("testareraera\n");
 	 //printf("wudan\n");
 	 //GPIO_WriteBit( LED1_PORT, LED1_PIN,Bit_SET);
  }	

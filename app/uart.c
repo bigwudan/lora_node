@@ -21,9 +21,19 @@ static uint8_t t_buf[16] = {0x11};
 uint8_t rx_buf[UART1_RX_LEN] = {0};
 
 int fputc(int ch, FILE *f)
-{      
+{
+#if 0	
 	while((USART1->ISR&0X40)==0);
-    USART1->TDR = (uint8_t) ch;      
+    USART1->TDR = (uint8_t) ch;
+#else
+	uint8_t t_buf[2] = {0};
+	t_buf[0] = ch;
+	UartDMA_send(t_buf, 1);
+	while(DMA_GetFlagStatus(DMA1_FLAG_TC2) == RESET){
+		__NOP;
+	}
+
+#endif	
 	return ch;
 }
 

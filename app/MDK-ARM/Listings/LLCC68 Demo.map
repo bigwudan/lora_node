@@ -138,8 +138,8 @@ Section Cross References
     main.o(i.main) refers to stm32f0xx_syscfg.o(i.SYSCFG_MemoryRemapConfig) for SYSCFG_MemoryRemapConfig
     main.o(i.main) refers to main.o(i.HW_int) for HW_int
     main.o(i.main) refers to main.o(i._Delay_Ms) for _Delay_Ms
-    main.o(i.main) refers to uart.o(i.UartDMA_send) for UartDMA_send
     main.o(i.main) refers to main.o(i._check_dma) for _check_dma
+    main.o(i.main) refers to noretval__2printf.o(.text) for __2printf
     spi.o(i.SPI2_Int) refers to stm32f0xx_spi.o(i.SPI_Init) for SPI_Init
     spi.o(i.SPI2_Int) refers to stm32f0xx_spi.o(i.SPI_RxFIFOThresholdConfig) for SPI_RxFIFOThresholdConfig
     spi.o(i.SPI2_Int) refers to stm32f0xx_spi.o(i.SPI_Cmd) for SPI_Cmd
@@ -192,6 +192,8 @@ Section Cross References
     uart.o(i.UartInit) refers to stm32f0xx_usart.o(i.USART_Cmd) for USART_Cmd
     uart.o(i.UartInit) refers to stm32f0xx_misc.o(i.NVIC_Init) for NVIC_Init
     uart.o(i.UartInit) refers to uart.o(i.UartDMAInit) for UartDMAInit
+    uart.o(i.fputc) refers to uart.o(i.UartDMA_send) for UartDMA_send
+    uart.o(i.fputc) refers to stm32f0xx_dma.o(i.DMA_GetFlagStatus) for DMA_GetFlagStatus
     rtc.o(i.RTC_Alarm_Config) refers to stm32f0xx_misc.o(i.NVIC_Init) for NVIC_Init
     rtc.o(i.RTC_Alarm_Config) refers to stm32f0xx_rtc.o(i.RTC_ITConfig) for RTC_ITConfig
     rtc.o(i.RTC_Alarm_Config) refers to stm32f0xx_rtc.o(i.RTC_AlarmCmd) for RTC_AlarmCmd
@@ -1267,7 +1269,7 @@ Image Symbol Table
     i._check_dma                             0x08003704   Section        0  main.o(i._check_dma)
     _check_dma                               0x08003705   Thumb Code    34  main.o(i._check_dma)
     i.fputc                                  0x08003730   Section        0  uart.o(i.fputc)
-    i.main                                   0x0800374c   Section        0  main.o(i.main)
+    i.main                                   0x08003758   Section        0  main.o(i.main)
     .data                                    0x200000b4   Section       20  system_stm32f0xx.o(.data)
     .data                                    0x200000c8   Section       16  stm32f0xx_rcc.o(.data)
     APBAHBPrescTable                         0x200000c8   Data          16  stm32f0xx_rcc.o(.data)
@@ -1486,10 +1488,10 @@ Image Symbol Table
     UartDMAInit                              0x08003535   Thumb Code   164  uart.o(i.UartDMAInit)
     UartDMA_send                             0x080035e9   Thumb Code    58  uart.o(i.UartDMA_send)
     UartInit                                 0x0800362d   Thumb Code   176  uart.o(i.UartInit)
-    fputc                                    0x08003731   Thumb Code    24  uart.o(i.fputc)
-    main                                     0x0800374d   Thumb Code    54  main.o(i.main)
-    Region$$Table$$Base                      0x0800378c   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x080037ac   Number         0  anon$$obj.o(Region$$Table)
+    fputc                                    0x08003731   Thumb Code    40  uart.o(i.fputc)
+    main                                     0x08003759   Thumb Code    52  main.o(i.main)
+    Region$$Table$$Base                      0x080037a4   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x080037c4   Number         0  anon$$obj.o(Region$$Table)
     SystemCoreClock                          0x200000b4   Data           4  system_stm32f0xx.o(.data)
     AHBPrescTable                            0x200000b8   Data          16  system_stm32f0xx.o(.data)
     TickCounter                              0x200000d8   Data           4  stm32f0xx_it.o(.data)
@@ -1509,9 +1511,9 @@ Memory Map of the image
 
   Image Entry point : 0x080020b5
 
-  Load Region LR_IROM1 (Base: 0x08002000, Size: 0x000017f8, Max: 0x0000e000, ABSOLUTE)
+  Load Region LR_IROM1 (Base: 0x08002000, Size: 0x00001810, Max: 0x0000e000, ABSOLUTE)
 
-    Execution Region ER_IROM1 (Exec base: 0x08002000, Load base: 0x08002000, Size: 0x000017ac, Max: 0x0000e000, ABSOLUTE)
+    Execution Region ER_IROM1 (Exec base: 0x08002000, Load base: 0x08002000, Size: 0x000017c4, Max: 0x0000e000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -1645,19 +1647,19 @@ Memory Map of the image
     0x0800362c   0x0800362c   0x000000b8   Code   RO         4068    i.UartInit          uart.o
     0x080036e4   0x080036e4   0x00000020   Code   RO         3813    i._Delay_Ms         main.o
     0x08003704   0x08003704   0x0000002c   Code   RO         3814    i._check_dma        main.o
-    0x08003730   0x08003730   0x0000001c   Code   RO         4069    i.fputc             uart.o
-    0x0800374c   0x0800374c   0x00000040   Code   RO         3815    i.main              main.o
-    0x0800378c   0x0800378c   0x00000020   Data   RO         4442    Region$$Table       anon$$obj.o
+    0x08003730   0x08003730   0x00000028   Code   RO         4069    i.fputc             uart.o
+    0x08003758   0x08003758   0x0000004c   Code   RO         3815    i.main              main.o
+    0x080037a4   0x080037a4   0x00000020   Data   RO         4442    Region$$Table       anon$$obj.o
 
 
-    Execution Region RW_IRAM1 (Exec base: 0x200000b4, Load base: 0x080037ac, Size: 0x000006bc, Max: 0x00000f3c, ABSOLUTE)
+    Execution Region RW_IRAM1 (Exec base: 0x200000b4, Load base: 0x080037c4, Size: 0x000006bc, Max: 0x00000f3c, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x200000b4   0x080037ac   0x00000014   Data   RW           15    .data               system_stm32f0xx.o
-    0x200000c8   0x080037c0   0x00000010   Data   RW         1965    .data               stm32f0xx_rcc.o
-    0x200000d8   0x080037d0   0x00000014   Data   RW         3925    .data               stm32f0xx_it.o
-    0x200000ec   0x080037e4   0x00000014   Data   RW         4071    .data               uart.o
+    0x200000b4   0x080037c4   0x00000014   Data   RW           15    .data               system_stm32f0xx.o
+    0x200000c8   0x080037d8   0x00000010   Data   RW         1965    .data               stm32f0xx_rcc.o
+    0x200000d8   0x080037e8   0x00000014   Data   RW         3925    .data               stm32f0xx_it.o
+    0x200000ec   0x080037fc   0x00000014   Data   RW         4071    .data               uart.o
     0x20000100        -       0x00000010   Zero   RW         4070    .bss                uart.o
     0x20000110        -       0x00000060   Zero   RW         4315    .bss                c_p.l(libspace.o)
     0x20000170        -       0x00000200   Zero   RW            2    HEAP                startup_stm32f030.o
@@ -1672,7 +1674,7 @@ Image component sizes
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
        328          6          0          0          0     162855   gpio.o
-       508         64          0          0          0       9138   main.o
+       520         78          0          0          0       9138   main.o
        116         56        180          0       1536        744   startup_stm32f030.o
        544         44          0          0          0       5624   stm32f0xx_dma.o
         40         12          0          0          0       1088   stm32f0xx_exti.o
@@ -1684,10 +1686,10 @@ Image component sizes
         44          0          0          0          0       1774   stm32f0xx_tim.o
        450         22          0          0          0       5347   stm32f0xx_usart.o
        340         24          0         20          0     239557   system_stm32f0xx.o
-       460         38          0         20         16       4437   uart.o
+       472         34          0         20         16       4529   uart.o
 
     ----------------------------------------------------------------------
-      4594        444        212         76       1552     447179   Object Totals
+      4618        454        212         76       1552     447271   Object Totals
          0          0         32          0          0          0   (incl. Generated)
          6          0          0          0          0          0   (incl. Padding)
 
@@ -1747,15 +1749,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      5848        478        212         76       1648     445455   Grand Totals
-      5848        478        212         76       1648     445455   ELF Image Totals
-      5848        478        212         76          0          0   ROM Totals
+      5872        488        212         76       1648     445547   Grand Totals
+      5872        488        212         76       1648     445547   ELF Image Totals
+      5872        488        212         76          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                 6060 (   5.92kB)
+    Total RO  Size (Code + RO Data)                 6084 (   5.94kB)
     Total RW  Size (RW Data + ZI Data)              1724 (   1.68kB)
-    Total ROM Size (Code + RO Data + RW Data)       6136 (   5.99kB)
+    Total ROM Size (Code + RO Data + RW Data)       6160 (   6.02kB)
 
 ==============================================================================
 
