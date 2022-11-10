@@ -90,9 +90,12 @@ int main(void)
  //初始化时钟
  HW_int();
 	__enable_irq();
+	uint8_t sx[] = "12\n";
  while(1){
 		__NOP;
-	 printf("wudan\n");
+	 _Delay_Ms(2000);
+	 UartDMA_send(sx, sizeof(sx));
+	 //printf("wudan\n");
 	 //GPIO_WriteBit( LED1_PORT, LED1_PIN,Bit_SET);
  }	
 	

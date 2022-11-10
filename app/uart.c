@@ -1,7 +1,9 @@
 #include "uart.h"
 #include <stdarg.h>
 
-               
+#define UART1_RX_LEN 16
+ 
+#define TX_CHANNEL 	DMA1_Channel2 
 struct __FILE 
 { 
 	int handle; 
@@ -10,12 +12,56 @@ struct __FILE
 
 FILE __stdout;       
 
+static uint8_t t_buf[16] = {0x11};
+
 int fputc(int ch, FILE *f)
 {      
 	while((USART1->ISR&0X40)==0);
     USART1->TDR = (uint8_t) ch;      
 	return ch;
 }
+
+void UartDMAInit(){
+
+	
+	//使能dma时钟
+	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1,ENABLE);
+	DMA_InitTypeDef DMA_InitStructure;
+	
+	DMA_DeInit(TX_CHANNEL);	
+	DMA_Cmd(TX_CHANNEL, DISABLE);
+	DMA_InitStructure.DMA_PeripheralBaseAddr 	= (uint32_t)&USART1->TDR;//外设数据地址
+	DMA_InitStructure.DMA_MemoryBaseAddr 		= (uint32_t)t_buf;  //自己的接收buf
+	DMA_InitStructure.DMA_BufferSize			= UART1_RX_LEN;  // 缓存大小
+	DMA_InitStructure.DMA_M2M 					= DMA_M2M_Disable;	 // 内存到内存关闭
+	DMA_InitStructure.DMA_Mode 					= DMA_Mode_Normal;	// 普通模式
+	DMA_InitStructure.DMA_DIR 					= DMA_DIR_PeripheralDST;	 // 外设到内存
+	DMA_InitStructure.DMA_Priority 				= DMA_Priority_High; // DMA通道优先级
+	DMA_InitStructure.DMA_MemoryInc 			= DMA_MemoryInc_Enable;// 内存地址递增
+	DMA_InitStructure.DMA_PeripheralInc			= DMA_PeripheralInc_Disable;//外设基地址不需要递增
+	DMA_InitStructure.DMA_MemoryDataSize 		= DMA_MemoryDataSize_Byte; 
+	DMA_InitStructure.DMA_PeripheralDataSize 	= DMA_PeripheralDataSize_Byte;
+	DMA_Init(TX_CHANNEL,&DMA_InitStructure);
+	DMA_Cmd(TX_CHANNEL, ENABLE); 	
+	
+}
+
+void UartDMA_send(uint8_t *buf, uint16_t len){
+	
+	if(DMA_GetFlagStatus(DMA1_FLAG_TC2) == SET){
+	
+		DMA_ClearFlag(DMA1_FLAG_TC2);
+		
+		memmove(t_buf, buf, len);
+		DMA_Cmd(TX_CHANNEL, DISABLE);
+		DMA_SetCurrDataCounter(TX_CHANNEL, len);
+		DMA_Cmd(TX_CHANNEL, ENABLE); 
+	}
+
+	
+
+}
+
 
 void UartInit(uint32_t BaudRate)
   {  
@@ -50,14 +96,18 @@ void UartInit(uint32_t BaudRate)
 				USART_ITConfig(USART1,USART_IT_RXNE,ENABLE);  
 
 
-
+				USART_DMACmd(USART1,USART_DMAReq_Tx, ENABLE );
         USART_Cmd(USART1, ENABLE);
+
+
 
 
 				NVIC_InitStruct.NVIC_IRQChannel = USART1_IRQn;
 				NVIC_InitStruct.NVIC_IRQChannelPriority = 0x02;
 				NVIC_InitStruct.NVIC_IRQChannelCmd = ENABLE;
 				NVIC_Init(&NVIC_InitStruct);
+				
+				UartDMAInit();
 
 		}			
 

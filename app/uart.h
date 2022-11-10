@@ -16,7 +16,7 @@ int fputc(int ch, FILE *f);
 void UART_send_byte(uint8_t byte);
 void UART_Send(uint8_t *Buffer, uint32_t Length);
 uint8_t UART_Recive(void);
-
+void UartDMA_send(uint8_t *buf, uint16_t len);
 
 #endif
 
