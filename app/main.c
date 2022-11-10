@@ -80,6 +80,22 @@ void HW_int(void)
 #define APPLICATION_ADDRESS ((uint32_t)0x08002000)
  
 
+static void _check_dma(){
+		uint16_t data;
+	uint8_t d =0;
+
+		//DMA_Cmd(DMA1_Channel3, DISABLE);
+		data= 16 - DMA_GetCurrDataCounter(DMA1_Channel3);//获得传输的数据个数
+		if(data >0){
+			DMA_SetCurrDataCounter(DMA1_Channel3, 16);
+			//DMA_Cmd(DMA1_Channel3, ENABLE);
+			extern uint8_t rx_buf[16];
+			d = rx_buf[0];
+			d = rx_buf[1];
+			//memset(rx_buf, 0, 16);
+		}
+}
+
 int main(void)
 {
 	memcpy((void*)0x20000000, (void*)APPLICATION_ADDRESS, 0xB4);
@@ -95,6 +111,7 @@ int main(void)
 		__NOP;
 	 _Delay_Ms(2000);
 	 UartDMA_send(sx, sizeof(sx));
+	 _check_dma();
 	 //printf("wudan\n");
 	 //GPIO_WriteBit( LED1_PORT, LED1_PIN,Bit_SET);
  }	

@@ -2,8 +2,12 @@
 #include <stdarg.h>
 
 #define UART1_RX_LEN 16
+
+//#define UART1_RX_LEN 16
  
 #define TX_CHANNEL 	DMA1_Channel2 
+#define RX_CHANNEL 	DMA1_Channel3 
+
 struct __FILE 
 { 
 	int handle; 
@@ -13,6 +17,8 @@ struct __FILE
 FILE __stdout;       
 
 static uint8_t t_buf[16] = {0x11};
+
+uint8_t rx_buf[UART1_RX_LEN] = {0};
 
 int fputc(int ch, FILE *f)
 {      
@@ -43,6 +49,28 @@ void UartDMAInit(){
 	DMA_InitStructure.DMA_PeripheralDataSize 	= DMA_PeripheralDataSize_Byte;
 	DMA_Init(TX_CHANNEL,&DMA_InitStructure);
 	DMA_Cmd(TX_CHANNEL, ENABLE); 	
+	
+	
+	
+	/*****DMA接收配置 Peripheral->Memory*****************/
+	DMA_DeInit(RX_CHANNEL);
+	DMA_Cmd(RX_CHANNEL, DISABLE);	
+	DMA_InitStructure.DMA_BufferSize = UART1_RX_LEN;
+	DMA_InitStructure.DMA_M2M = DMA_M2M_Disable;
+	DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;
+	DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralSRC;
+	DMA_InitStructure.DMA_Priority = DMA_Priority_High;
+	DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
+	DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&USART1->RDR;
+	DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
+	DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
+	DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)rx_buf;
+	DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
+	DMA_Init(RX_CHANNEL,&DMA_InitStructure);
+	
+
+	DMA_Cmd(RX_CHANNEL,ENABLE); //使能DMA通道5
+
 	
 }
 
@@ -93,10 +121,14 @@ void UartInit(uint32_t BaudRate)
         USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
         USART_Init(USART1, &USART_InitStructure); 
 
-				USART_ITConfig(USART1,USART_IT_RXNE,ENABLE);  
-
+				//USART_ITConfig(USART1,USART_IT_RXNE,ENABLE);  
+				USART_ITConfig(USART1, USART_IT_IDLE, ENABLE);
+				USART_ClearFlag(USART1, USART_FLAG_IDLE);
 
 				USART_DMACmd(USART1,USART_DMAReq_Tx, ENABLE );
+				
+				USART_DMACmd(USART1,USART_DMAReq_Rx,ENABLE);
+				
         USART_Cmd(USART1, ENABLE);
 
 
@@ -133,5 +165,8 @@ uint8_t UART_Recive(void)
 	while(!(USART1->ISR & (1<<5)));
 	return(USART1->RDR);			 
 }
+
+
+
 
 		

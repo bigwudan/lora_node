@@ -133,9 +133,29 @@ uint16_t rx_data = 0;
 void USART1_IRQHandler(void)
 {
 	uint16_t data = 0;
+	uint8_t d = 0;
 	if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)
 	{
 		rx_data = USART_ReceiveData(USART1);
+	}
+	if(USART_GetITStatus(USART1, USART_IT_IDLE) != RESET){
+		USART_ClearFlag(USART1, USART_FLAG_IDLE);
+		
+//		
+		data= 16 - DMA_GetCurrDataCounter(DMA1_Channel3);//获得传输的数据个数
+		if(data >0){
+			extern uint8_t rx_buf[16];
+			d = rx_buf[0];
+			d = rx_buf[1];
+			DMA_Cmd(DMA1_Channel3, DISABLE);	
+			memset(rx_buf, 0, 16);			
+			DMA_SetCurrDataCounter(DMA1_Channel3, 16);
+			DMA_Cmd(DMA1_Channel3, ENABLE);
+
+			
+		}
+
+		
 	}
 }
 
