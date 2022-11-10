@@ -599,21 +599,6 @@
             </File>
           </Files>
         </Group>
-        <Group>
-          <GroupName>lora_app</GroupName>
-          <Files>
-            <File>
-              <FileName>lora_common.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Radio\lora_app\common\lora_common.c</FilePath>
-            </File>
-            <File>
-              <FileName>lora_node.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Radio\lora_app\node\lora_node.c</FilePath>
-            </File>
-          </Files>
-        </Group>
       </Groups>
     </Target>
   </Targets>
