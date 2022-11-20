@@ -32,13 +32,3 @@
 .\objects\stm32f0xx_it.o: ..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_usart.h
 .\objects\stm32f0xx_it.o: ..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_wwdg.h
 .\objects\stm32f0xx_it.o: ..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_misc.h
-.\objects\stm32f0xx_it.o: ..\user.h
-.\objects\stm32f0xx_it.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdbool.h
-.\objects\stm32f0xx_it.o: D:\keil5\ARM\ARMCC\Bin\..\include\string.h
-.\objects\stm32f0xx_it.o: ..\gpio.h
-.\objects\stm32f0xx_it.o: ..\delay.h
-.\objects\stm32f0xx_it.o: ..\spi.h
-.\objects\stm32f0xx_it.o: ..\Radio\inc\radio.h
-.\objects\stm32f0xx_it.o: ..\Radio\inc\sx126x.h
-.\objects\stm32f0xx_it.o: ..\Radio\inc\sx126x-board.h
-.\objects\stm32f0xx_it.o: ..\Radio\inc\crc.h

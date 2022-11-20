@@ -43,12 +43,14 @@ void JumpApp(void)
 
 int main(void){
 	HW_int();//吴丹
-	
+
+
+#if 1	
 		//关闭中断
 	__disable_irq();
 	
 	JumpApp();
-
+#endif
 }
 
 

@@ -29,12 +29,8 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f0xx_it.h"
-#include "user.h"
 
-volatile  uint32_t TickCounter=0;
-volatile  uint32_t ticktimer=0;
 
-volatile  uint32_t count_timer=0;
 
 /** @addtogroup Template_Project
   * @{
@@ -99,8 +95,6 @@ void PendSV_Handler(void)
 void SysTick_Handler(void)
 {
   
-  TickCounter++;
-  ticktimer++;
 
 }
 
@@ -147,11 +141,7 @@ void SPI2_IRQHandler(void)
 
 void TIM14_IRQHandler(void)
 {
-  if(TIM_GetITStatus(TIM14, TIM_IT_Update))
-  {
-    TIM_ClearITPendingBit(TIM14,TIM_IT_Update);
- 
-  }
+
 }
 
 
@@ -163,32 +153,9 @@ void TIM14_IRQHandler(void)
 
 void EXTI0_1_IRQHandler(void)
 {
-  if(EXTI_GetITStatus(EXTI_Line1) != RESET)
-  {
-    /* Clear the EXTI line 1 pending bit */
-    EXTI_ClearITPendingBit(EXTI_Line1);
-    
-    
-  }
+
 }
 void TIM3_IRQHandler(void)   
 {
-	static int idx = 0;
-    if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)  
-      {	 
-        TIM_ClearITPendingBit(TIM3, TIM_IT_Update);	
-				count_timer++;
-        if(count_timer==100)
-        {
-         count_timer=0;
-         
-        }
-				if(idx == 0){
-					idx = 1;
-					GPIO_WriteBit( LED1_PORT, LED1_PIN,Bit_RESET);
-				}else{
-					idx = 0;
-					GPIO_WriteBit( LED1_PORT, LED1_PIN,Bit_SET);
-				}
-      }
+	
 }
