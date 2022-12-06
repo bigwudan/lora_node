@@ -24,7 +24,7 @@ Maintainer: Miguel Luis and Gregory Cristian
 #include "crc.h"
 
 #include "lora_common.h"
-
+#include "rtc.h"
 
 
 
@@ -69,20 +69,34 @@ void HW_int(void)
 	RCC_Configuration();
 	GPIO_int();
 	SPI1_Int();
+	
+	FlagStatus res = RESET;
+	res = PWR_GetFlagStatus(PWR_FLAG_WU);
+	if(res == RESET){
+		printf("111HW_int\n");
+		rtc_set();
+	}else{
+		printf("11wakeup\n");
+		//rtc_set();
+	}	
+	
 }
 
 
 
 int main( void )
-{   
+{ 
+	RTC_TimeTypeDef	  RTC_TimeStructure;  
 	HW_int();//MCU外围资源初始化
 	printf("main_ok\n");
 	lora_node_init(); //初始化
 	printf("lora_node_init_ok\n");
 	while(1){
 		Radio.IrqProcess( ); // Process Radio IRQ
-		lora_node_task();		
-		//printf("xxxxx[%d][%d][%d]\n", RTC_TimeStructure.RTC_Hours, RTC_TimeStructure.RTC_Minutes, RTC_TimeStructure.RTC_Seconds);
+		lora_node_task();
+		rtc_get_time(&RTC_TimeStructure);
+		printf("main[%d][%d][%d]\n", RTC_TimeStructure.RTC_Hours, RTC_TimeStructure.RTC_Minutes, RTC_TimeStructure.RTC_Seconds);			
+
 	}
 }
 

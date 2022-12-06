@@ -41,3 +41,4 @@
 .\objects\main.o: ..\Radio\inc\sx126x-board.h
 .\objects\main.o: ..\Radio\inc\crc.h
 .\objects\main.o: ..\Radio\lora_app\lora_common.h
+.\objects\main.o: ..\rtc.h

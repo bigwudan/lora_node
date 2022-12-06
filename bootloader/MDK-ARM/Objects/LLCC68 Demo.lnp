@@ -17,6 +17,7 @@
 ".\objects\gpio.o"
 ".\objects\spi.o"
 ".\objects\delay.o"
+".\objects\rtc.o"
 ".\objects\crc.o"
 ".\objects\radio.o"
 ".\objects\sx126x.o"
