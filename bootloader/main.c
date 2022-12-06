@@ -82,7 +82,7 @@ extern bool IrqFired;
 
 
 
-bool EnableMaster=true;//主从选择
+bool EnableMaster=false;//主从选择
 
 uint16_t  crc_value;
 /*!
@@ -203,7 +203,7 @@ int main( void )
     
     HW_int();//MCU外围资源初始化
 		
-		
+		printf("test_main\n");
     
     
     // Radio initialization
