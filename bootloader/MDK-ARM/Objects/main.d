@@ -31,3 +31,12 @@
 .\objects\main.o: ..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_usart.h
 .\objects\main.o: ..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_wwdg.h
 .\objects\main.o: ..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_misc.h
+.\objects\main.o: ..\uart.h
+.\objects\main.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\main.o: ..\spi.h
+.\objects\main.o: ..\gpio.h
+.\objects\main.o: ..\Radio\inc\radio.h
+.\objects\main.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\main.o: ..\Radio\inc\sx126x.h
+.\objects\main.o: ..\Radio\inc\sx126x-board.h
+.\objects\main.o: ..\Radio\inc\crc.h

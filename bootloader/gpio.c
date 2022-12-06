@@ -94,27 +94,5 @@ void GPIO_int()
   GPIO_Init(RADIO_MISO_PORT, &GPIO_InitStruct);
   GPIO_PinAFConfig(RADIO_MISO_PORT,RADIO_MISO_AF,GPIO_AF_0);
   
-  
-  /****************************************
-   TX
-  ****************************************/
-  GPIO_InitStruct.GPIO_OType=GPIO_OType_PP;
-  GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_UP;
-  GPIO_InitStruct.GPIO_Speed=GPIO_Speed_Level_2;
-  GPIO_InitStruct.GPIO_Mode=GPIO_Mode_OUT;
-  GPIO_InitStruct.GPIO_Pin=RADIO_TX_PIN;
-  GPIO_Init(RADIO_TX_PORT, &GPIO_InitStruct);
-  
-  
-  /****************************************
-   LED1
-  ****************************************/
-  GPIO_InitStruct.GPIO_OType=GPIO_OType_PP;
-  GPIO_InitStruct.GPIO_PuPd=GPIO_PuPd_UP;
-  GPIO_InitStruct.GPIO_Speed=GPIO_Speed_Level_2;
-  GPIO_InitStruct.GPIO_Mode=GPIO_Mode_OUT;
-  GPIO_InitStruct.GPIO_Pin=LED1_PIN;
-  GPIO_Init(LED1_PORT, &GPIO_InitStruct);
-  
 }
 

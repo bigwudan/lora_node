@@ -1,6 +1,7 @@
 #include "stm32f0xx.h"
+#include "spi.h"
 
-void SPI2_Int()
+void SPI1_Int()
 {
     SPI_InitTypeDef  SPI_InitStruct;
     
@@ -13,10 +14,10 @@ void SPI2_Int()
     SPI_InitStruct.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_16; // 6MHz
     SPI_InitStruct.SPI_FirstBit = SPI_FirstBit_MSB;
     SPI_InitStruct.SPI_CRCPolynomial = 7;
-    SPI_Init(SPI2,&SPI_InitStruct);
+    SPI_Init(SPI1,&SPI_InitStruct);
     
-    SPI_RxFIFOThresholdConfig(SPI2, SPI_RxFIFOThreshold_QF);
-    SPI_Cmd(SPI2, ENABLE );
+    SPI_RxFIFOThresholdConfig(SPI1, SPI_RxFIFOThreshold_QF);
+    SPI_Cmd(SPI1, ENABLE );
 }
 
 /*!
@@ -29,11 +30,11 @@ void SPI2_Int()
 uint8_t SpiInOut( uint8_t txBuffer)
 {
     
-      while( SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_TXE) == RESET);//当发送buffer为空时(说明上一次数据已复制到移位寄存器中)退出,这时可以往buffer里面写数据
-      SPI_SendData8(SPI2, txBuffer);
+      while( SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET);//当发送buffer为空时(说明上一次数据已复制到移位寄存器中)退出,这时可以往buffer里面写数据
+      SPI_SendData8(SPI1, txBuffer);
     
-      while( SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_RXNE) == RESET);//当接收buffer为非空时退出
-      return SPI_ReceiveData8(SPI2);
+      while( SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE) == RESET);//当接收buffer为非空时退出
+      return SPI_ReceiveData8(SPI1);
       
    
 }
@@ -44,11 +45,11 @@ void SpiIn( uint8_t *txBuffer, uint16_t size )
     
     for(i=0;i<size;i++)
     {
-      while( SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_TXE) == RESET);//当发送buffer为空时(说明上一次数据已复制到移位寄存器中)退出,这时可以往buffer里面写数据
-      SPI_SendData8(SPI2, txBuffer[i]);
+      while( SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET);//当发送buffer为空时(说明上一次数据已复制到移位寄存器中)退出,这时可以往buffer里面写数据
+      SPI_SendData8(SPI1, txBuffer[i]);
       
-      while( SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_RXNE) == RESET);//当接收buffer为非空时退出
-      SPI_ReceiveData8(SPI2);
+      while( SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE) == RESET);//当接收buffer为非空时退出
+      SPI_ReceiveData8(SPI1);
     }
 }
 

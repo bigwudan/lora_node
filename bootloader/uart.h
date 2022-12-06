@@ -3,8 +3,8 @@
 #include "stm32f0xx.h"
 #include <stdio.h>
 
-#define USER_UART_TX_PIN                  GPIO_Pin_9
-#define USER_UART_RX_PIN                  GPIO_Pin_10
+#define USER_UART_TX_PIN                  GPIO_Pin_2
+#define USER_UART_RX_PIN                  GPIO_Pin_3
 
 #define USER_UART_PORT                    GPIOA
 #define USER_UART_GPIO_CLK           RCC_AHBPeriph_GPIOA

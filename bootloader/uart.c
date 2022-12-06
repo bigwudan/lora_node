@@ -26,8 +26,8 @@ void UartInit(uint32_t BaudRate)
         RCC_AHBPeriphClockCmd( USER_UART_GPIO_CLK, ENABLE);
         RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE );
                 
-        GPIO_PinAFConfig(USER_UART_PORT,GPIO_PinSource9,GPIO_AF_1);
-        GPIO_PinAFConfig(USER_UART_PORT,GPIO_PinSource10,GPIO_AF_1);        
+        GPIO_PinAFConfig(USER_UART_PORT,GPIO_PinSource2,GPIO_AF_1);
+        GPIO_PinAFConfig(USER_UART_PORT,GPIO_PinSource3,GPIO_AF_1);        
         /*
         *  USART1_TX -> PA9 , USART1_RX ->        PA10
         */                                

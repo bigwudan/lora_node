@@ -30,7 +30,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f0xx_it.h"
 
-
+volatile  uint32_t TickCounter=0;
+volatile  uint32_t ticktimer=0;
 
 /** @addtogroup Template_Project
   * @{
@@ -94,7 +95,8 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
-  
+  TickCounter++;
+  ticktimer++;  
 
 }
 

@@ -471,36 +471,7 @@ static void _handlesys(){
 
 int main(void)
 {
-	memcpy((void*)0x20000000, (void*)APPLICATION_ADDRESS, 0xB4);
-	SYSCFG_MemoryRemapConfig(SYSCFG_MemoryRemap_SRAM);
-	/*user code begin*/
-	//正常用户程序
-	/*user code end*/
- //初始化时钟
- _handlesys();
-	__enable_irq();
 
-	
-	
-	
-#if 0	
-	uint8_t sx[] = "12\n";
- while(1){
-		__NOP;
-	 _Delay_Ms(2000);
-	 //UartDMA_send(sx, sizeof(sx));
-	 _check_dma();
-	 printf("testareraera\n");
-	 //printf("wudan\n");
-	 //GPIO_WriteBit( LED1_PORT, LED1_PIN,Bit_SET);
- }
-#else
-	while(1){
-		__NOP;
-	
-	}
-	
-#endif	
 }
 
 
