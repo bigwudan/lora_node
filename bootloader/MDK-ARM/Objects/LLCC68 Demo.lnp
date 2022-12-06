@@ -21,6 +21,8 @@
 ".\objects\radio.o"
 ".\objects\sx126x.o"
 ".\objects\sx126x-board.o"
+".\objects\lora_common.o"
+".\objects\lora_node.o"
 --library_type=microlib --strict --scatter ".\Objects\LLCC68 Demo.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

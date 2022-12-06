@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F030  USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\Libraries\CMSIS\Device\ST\STM32F0xx\Include;..\Libraries\STM32F0xx_StdPeriph_Driver\inc;..\Radio\inc;..\Libraries\CMSIS\Include;..\.;..\Radio\lora_app\common;..\Radio\lora_app\node</IncludePath>
+              <IncludePath>..\Libraries\CMSIS\Device\ST\STM32F0xx\Include;..\Libraries\STM32F0xx_StdPeriph_Driver\inc;..\Radio\inc;..\Libraries\CMSIS\Include;..\.;..\Radio\lora_app\common;..\Radio\lora_app\node;..\Radio\lora_app</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -506,6 +506,21 @@
               <FileName>sx126x-board.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Radio\src\sx126x-board.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>lora_app</GroupName>
+          <Files>
+            <File>
+              <FileName>lora_common.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Radio\lora_app\lora_common.c</FilePath>
+            </File>
+            <File>
+              <FileName>lora_node.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Radio\lora_app\lora_node.c</FilePath>
             </File>
           </Files>
         </Group>

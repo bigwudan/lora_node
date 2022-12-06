@@ -1,9 +1,9 @@
-.\objects\lora_node.o: ..\Radio\lora_app\node\lora_node.c
+.\objects\lora_node.o: ..\Radio\lora_app\lora_node.c
 .\objects\lora_node.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdio.h
 .\objects\lora_node.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\lora_node.o: D:\keil5\ARM\ARMCC\Bin\..\include\string.h
-.\objects\lora_node.o: ..\Radio\lora_app\common\lora_common.h
-.\objects\lora_node.o: ..\Radio\lora_app\node\lora_node.h
+.\objects\lora_node.o: ..\Radio\lora_app\lora_common.h
+.\objects\lora_node.o: ..\Radio\lora_app\lora_node.h
 .\objects\lora_node.o: ..\.\user.h
 .\objects\lora_node.o: ..\Libraries\CMSIS\Device\ST\STM32F0xx\Include\stm32f0xx.h
 .\objects\lora_node.o: ..\Libraries\CMSIS\Include\core_cm0.h
