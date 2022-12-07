@@ -26,6 +26,8 @@ Maintainer: Miguel Luis and Gregory Cristian
 #include "lora_common.h"
 #include "rtc.h"
 
+#include "operate_flash.h"
+
 
 
 void SysClock_48()
@@ -82,6 +84,19 @@ void HW_int(void)
 	
 }
 
+static void _write_sn(){
+	extern uint16_t rx_data;
+	if(rx_data >0){
+		printf("rec[%02X]\n",rx_data);
+		if(rx_data == 0x01){
+			operate_flash_write(0x1122);
+		}else{
+			printf("read_flash[%02X]\n", operate_flash_read());
+		}
+		rx_data = 0;
+	}
+	return ;
+}
 
 
 int main( void )
@@ -95,8 +110,8 @@ int main( void )
 		Radio.IrqProcess( ); // Process Radio IRQ
 		lora_node_task();
 		rtc_get_time(&RTC_TimeStructure);
-		printf("main[%d][%d][%d]\n", RTC_TimeStructure.RTC_Hours, RTC_TimeStructure.RTC_Minutes, RTC_TimeStructure.RTC_Seconds);			
-
+		//printf("main[%d][%d][%d]\n", RTC_TimeStructure.RTC_Hours, RTC_TimeStructure.RTC_Minutes, RTC_TimeStructure.RTC_Seconds);			
+		_write_sn();
 	}
 }
 

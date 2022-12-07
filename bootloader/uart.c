@@ -19,7 +19,7 @@ int fputc(int ch, FILE *f)
 
 void UartInit(uint32_t BaudRate)
   {  
-
+				NVIC_InitTypeDef NVIC_InitStruct;
         GPIO_InitTypeDef  GPIO_InitStructure;
         USART_InitTypeDef USART_InitStructure;
                 
@@ -47,6 +47,16 @@ void UartInit(uint32_t BaudRate)
         USART_Init(USART1, &USART_InitStructure); 
 
         USART_Cmd(USART1, ENABLE);
+				
+				USART_ITConfig(USART1,USART_IT_RXNE,ENABLE);  
+
+
+
+				NVIC_InitStruct.NVIC_IRQChannel = USART1_IRQn;
+				NVIC_InitStruct.NVIC_IRQChannelPriority = 0x02;
+				NVIC_InitStruct.NVIC_IRQChannelCmd = ENABLE;
+				NVIC_Init(&NVIC_InitStruct);
+				
 
 		}			
 

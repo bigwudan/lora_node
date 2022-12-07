@@ -125,10 +125,14 @@ void SysTick_Handler(void)
 
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
-
+uint16_t rx_data = 0;
 void USART1_IRQHandler(void)
 {
-
+	uint16_t data = 0;
+	if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)
+	{
+		rx_data = USART_ReceiveData(USART1);
+	}
 }
 
 void ADC1_IRQHandler(void)
