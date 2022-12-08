@@ -206,7 +206,7 @@ void RTC_Alarm_set_min(uint8_t min)
 
 	RTC_AlarmStructure.RTC_AlarmTime.RTC_Hours = sec_time/3600;
 	RTC_AlarmStructure.RTC_AlarmTime.RTC_Minutes = sec_time%3600/60;
-	RTC_AlarmStructure.RTC_AlarmTime.RTC_Seconds = sec_time/60;	
+	RTC_AlarmStructure.RTC_AlarmTime.RTC_Seconds = sec_time%3600%60;	
 
 	printf("cur[%d],alarm[%d][%d][%d]\n",
 					sec_time,	
