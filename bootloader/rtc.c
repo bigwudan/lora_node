@@ -52,7 +52,7 @@ void rtc_set(void)
 #else
 	RTC_TimeStructInit(&RTC_TimeStructure);/*???? (Time = 00h:00min:00sec).*/
 #endif
-  RTC_GetTime(RTC_HourFormat_12,&RTC_TimeStructure);//?????????
+  RTC_GetTime(RTC_HourFormat_24,&RTC_TimeStructure);//?????????
 }
 
 
@@ -60,3 +60,21 @@ void rtc_get_time(RTC_TimeTypeDef	  *RTC_TimeStructure){
 
 	RTC_GetTime(RTC_HourFormat_12,RTC_TimeStructure);
 }
+
+
+void rtc_set_time(RTC_TimeTypeDef	  *RTC_TimeStructure)
+{
+
+		
+//	RTC_TimeTypeDef	  RTC_TimeStructure;
+
+////HHMMSS	
+//	RTC_TimeStructure.RTC_H12=RTC_H12_AM;
+//	RTC_TimeStructure.RTC_Hours=10;
+//	RTC_TimeStructure.RTC_Minutes=3;
+//	RTC_TimeStructure.RTC_Seconds=1;
+	RTC_SetTime(RTC_Format_BCD,RTC_TimeStructure);
+
+
+}
+

@@ -5,6 +5,7 @@
 
 
 void rtc_get_time(RTC_TimeTypeDef	  *RTC_TimeStructure);
+void rtc_set_time(RTC_TimeTypeDef	  *RTC_TimeStructure);
 void rtc_set(void);
 
 #endif

@@ -32,12 +32,12 @@ Maintainer: Miguel Luis and Gregory Cristian
 
 void SysClock_48()
 { 
-		RCC_DeInit();
-   RCC_PLLCmd(DISABLE);
-   RCC_PLLConfig(RCC_PLLSource_HSI_Div2, RCC_PLLMul_12);//48M
-   RCC_PLLCmd(ENABLE);
-   while(!RCC_GetFlagStatus(RCC_FLAG_PLLRDY));
-   RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
+	RCC_DeInit();
+	RCC_PLLCmd(DISABLE);
+	RCC_PLLConfig(RCC_PLLSource_HSI_Div2, RCC_PLLMul_12);//48M
+	RCC_PLLCmd(ENABLE);
+	while(!RCC_GetFlagStatus(RCC_FLAG_PLLRDY));
+	RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
 }
 
 
@@ -88,30 +88,40 @@ static void _write_sn(){
 	extern uint16_t rx_data;
 	if(rx_data >0){
 		printf("rec[%02X]\n",rx_data);
-		if(rx_data == 0x01){
-			operate_flash_write(0x1122);
+		if(rx_data == 0xFF){
+			printf("read_flash[%02X]\n", operate_flash_read());			
 		}else{
-			printf("read_flash[%02X]\n", operate_flash_read());
+			operate_flash_write(rx_data);
 		}
 		rx_data = 0;
 	}
 	return ;
 }
 
+static void _get_rtc_time(){
+	RTC_TimeTypeDef	  RTC_TimeStructure; 
+	rtc_get_time(&RTC_TimeStructure);
+	printf("main[%d][%d][%d]\n", RTC_TimeStructure.RTC_Hours, RTC_TimeStructure.RTC_Minutes, RTC_TimeStructure.RTC_Seconds);		
+}
+
+//设置地址
+static void _set_addr(){
+	lora_base_data_t *base = lora_node_base_info();
+	base->addr = operate_flash_read();
+}
 
 int main( void )
 { 
-	RTC_TimeTypeDef	  RTC_TimeStructure;  
 	HW_int();//MCU外围资源初始化
 	printf("main_ok\n");
 	lora_node_init(); //初始化
 	printf("lora_node_init_ok\n");
+	_set_addr();
 	while(1){
 		Radio.IrqProcess( ); // Process Radio IRQ
 		lora_node_task();
-		rtc_get_time(&RTC_TimeStructure);
-		//printf("main[%d][%d][%d]\n", RTC_TimeStructure.RTC_Hours, RTC_TimeStructure.RTC_Minutes, RTC_TimeStructure.RTC_Seconds);			
 		_write_sn();
+		_get_rtc_time();
 	}
 }
 

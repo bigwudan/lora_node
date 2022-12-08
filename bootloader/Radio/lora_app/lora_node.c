@@ -79,7 +79,7 @@ Demo ????  EnableMaster=true  ????,???????"PING"????????,?????????"PONG"??LED??
 #define LORA_FIX_LENGTH_PAYLOAD_ON                  false
 #define LORA_IQ_INVERSION_ON                        false
 
-#define LORA_NODE_ADDR    0x2 //0x1
+#define LORA_NODE_ADDR    _base_info.addr
 
 
 extern bool IrqFired;
@@ -210,6 +210,25 @@ static lora_err_t _recv_end_fsm_func(){
 		printf("[%02X]", _recv_buf[i]);
 	}
 	printf("\n");
+	
+	RTC_TimeTypeDef	  RTC_TimeStructure;
+	memset(&RTC_TimeStructure, 0, sizeof(RTC_TimeTypeDef));
+	
+
+	
+	if(_recv_buf[_recv_len - 3] >= 12){
+		RTC_TimeStructure.RTC_H12 = RTC_H12_PM;
+		RTC_TimeStructure.RTC_Hours = _recv_buf[_recv_len - 3] - 12;
+	}else{
+		RTC_TimeStructure.RTC_H12 = RTC_H12_AM;
+		RTC_TimeStructure.RTC_Hours = _recv_buf[_recv_len - 3];
+	}
+	
+
+	RTC_TimeStructure.RTC_Minutes =_recv_buf[_recv_len - 2];
+	RTC_TimeStructure.RTC_Seconds = _recv_buf[_recv_len - 1];
+	rtc_set_time(&RTC_TimeStructure);
+	
 	if(_recv_buf[3] == LORA_NODE_ADDR){
 		printf("join SLEEP_FSM\n");
 		lora_change_state(SLEEP_FSM);
@@ -379,5 +398,10 @@ static void _OnRxError( void )
 	printf("[%s][%d]\n", __func__, __LINE__);	
 	lora_change_state(AGAIN_FSM);
 	return ;
+}
+
+//得到base_info
+lora_base_data_t *lora_node_base_info(){
+	return &_base_info;
 }
 

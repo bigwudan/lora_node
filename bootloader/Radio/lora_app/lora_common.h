@@ -51,6 +51,7 @@ typedef struct{
 	lora_fsm_state fsm_state; //状态机状态
 	uint32_t time; //当前时间 只计算秒/分/小时
 	uint32_t record_time; //间隔时间
+	uint16_t addr; //地址
 }lora_base_data_t;
 
 
@@ -95,5 +96,8 @@ void lora_node_task();
 void lora_node_init();
 
 void lora_change_state(lora_fsm_state state);
+
+//得到base_info
+lora_base_data_t *lora_node_base_info();
 #endif
 

@@ -372,7 +372,7 @@ I (..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_tim.h)(0x54808D10)
 I (..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_usart.h)(0x54808D11)
 I (..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_wwdg.h)(0x54808D10)
 I (..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_misc.h)(0x54808D10)
-F (..\main.c)(0x6390AE2E)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O1 --apcs=interwork --split_sections -I ..\Libraries\CMSIS\Device\ST\STM32F0xx\Include -I ..\Libraries\STM32F0xx_StdPeriph_Driver\inc -I ..\Radio\inc -I ..\Libraries\CMSIS\Include -I ..\. -I ..\Radio\lora_app\common -I ..\Radio\lora_app\node -I ..\Radio\lora_app-I.\RTE\_Demo-ID:\keil5_pack\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include-ID:\keil5\ARM\CMSIS\Include-D__UVISION_VERSION="527" -DSTM32F030x6 -DSTM32F030 -DUSE_STDPERIPH_DRIVER-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
+F (..\main.c)(0x6391629B)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O1 --apcs=interwork --split_sections -I ..\Libraries\CMSIS\Device\ST\STM32F0xx\Include -I ..\Libraries\STM32F0xx_StdPeriph_Driver\inc -I ..\Radio\inc -I ..\Libraries\CMSIS\Include -I ..\. -I ..\Radio\lora_app\common -I ..\Radio\lora_app\node -I ..\Radio\lora_app-I.\RTE\_Demo-ID:\keil5_pack\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include-ID:\keil5\ARM\CMSIS\Include-D__UVISION_VERSION="527" -DSTM32F030x6 -DSTM32F030 -DUSE_STDPERIPH_DRIVER-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
 I (D:\keil5\ARM\ARMCC\include\string.h)(0x599ECD2C)
 I (..\Libraries\CMSIS\Device\ST\STM32F0xx\Include\stm32f0xx.h)(0x635FA0BA)
 I (..\Libraries\CMSIS\Include\core_cm0.h)(0x547D9682)
@@ -413,8 +413,8 @@ I (D:\keil5\ARM\ARMCC\include\stdbool.h)(0x599ECD2E)
 I (..\Radio\inc\sx126x.h)(0x5BBF0271)
 I (..\Radio\inc\sx126x-board.h)(0x5BBF0D84)
 I (..\Radio\inc\crc.h)(0x5C92FCC7)
-I (..\Radio\lora_app\lora_common.h)(0x638F3605)
-I (..\rtc.h)(0x6360B57F)
+I (..\Radio\lora_app\lora_common.h)(0x639141D6)
+I (..\rtc.h)(0x639160B1)
 I (..\operate_flash.h)(0x638F3605)
 F (..\stm32f0xx_it.c)(0x6390AAEB)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O1 --apcs=interwork --split_sections -I ..\Libraries\CMSIS\Device\ST\STM32F0xx\Include -I ..\Libraries\STM32F0xx_StdPeriph_Driver\inc -I ..\Radio\inc -I ..\Libraries\CMSIS\Include -I ..\. -I ..\Radio\lora_app\common -I ..\Radio\lora_app\node -I ..\Radio\lora_app-I.\RTE\_Demo-ID:\keil5_pack\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include-ID:\keil5\ARM\CMSIS\Include-D__UVISION_VERSION="527" -DSTM32F030x6 -DSTM32F030 -DUSE_STDPERIPH_DRIVER-o .\objects\stm32f0xx_it.o --omf_browse .\objects\stm32f0xx_it.crf --depend .\objects\stm32f0xx_it.d)
 I (..\stm32f0xx_it.h)(0x54809128)
@@ -550,7 +550,7 @@ I (..\spi.h)(0x638DF4F1)
 F (..\delay.c)(0x5C9C80C8)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O1 --apcs=interwork --split_sections -I ..\Libraries\CMSIS\Device\ST\STM32F0xx\Include -I ..\Libraries\STM32F0xx_StdPeriph_Driver\inc -I ..\Radio\inc -I ..\Libraries\CMSIS\Include -I ..\. -I ..\Radio\lora_app\common -I ..\Radio\lora_app\node -I ..\Radio\lora_app-I.\RTE\_Demo-ID:\keil5_pack\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include-ID:\keil5\ARM\CMSIS\Include-D__UVISION_VERSION="527" -DSTM32F030x6 -DSTM32F030 -DUSE_STDPERIPH_DRIVER-o .\objects\delay.o --omf_browse .\objects\delay.crf --depend .\objects\delay.d)
 I (..\delay.h)(0x5C9C8106)
 I (D:\keil5\ARM\ARMCC\include\stdint.h)(0x599ECD2E)
-F (..\rtc.c)(0x6360C821)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O1 --apcs=interwork --split_sections -I ..\Libraries\CMSIS\Device\ST\STM32F0xx\Include -I ..\Libraries\STM32F0xx_StdPeriph_Driver\inc -I ..\Radio\inc -I ..\Libraries\CMSIS\Include -I ..\. -I ..\Radio\lora_app\common -I ..\Radio\lora_app\node -I ..\Radio\lora_app-I.\RTE\_Demo-ID:\keil5_pack\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include-ID:\keil5\ARM\CMSIS\Include-D__UVISION_VERSION="527" -DSTM32F030x6 -DSTM32F030 -DUSE_STDPERIPH_DRIVER-o .\objects\rtc.o --omf_browse .\objects\rtc.crf --depend .\objects\rtc.d)
+F (..\rtc.c)(0x6391608B)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O1 --apcs=interwork --split_sections -I ..\Libraries\CMSIS\Device\ST\STM32F0xx\Include -I ..\Libraries\STM32F0xx_StdPeriph_Driver\inc -I ..\Radio\inc -I ..\Libraries\CMSIS\Include -I ..\. -I ..\Radio\lora_app\common -I ..\Radio\lora_app\node -I ..\Radio\lora_app-I.\RTE\_Demo-ID:\keil5_pack\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include-ID:\keil5\ARM\CMSIS\Include-D__UVISION_VERSION="527" -DSTM32F030x6 -DSTM32F030 -DUSE_STDPERIPH_DRIVER-o .\objects\rtc.o --omf_browse .\objects\rtc.crf --depend .\objects\rtc.d)
 I (..\uart.h)(0x638DEA0F)
 I (..\Libraries\CMSIS\Device\ST\STM32F0xx\Include\stm32f0xx.h)(0x635FA0BA)
 I (..\Libraries\CMSIS\Include\core_cm0.h)(0x547D9682)
@@ -584,7 +584,7 @@ I (..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_wwdg.h)(0x54808D10)
 I (..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_misc.h)(0x54808D10)
 I (D:\keil5\ARM\ARMCC\include\stdio.h)(0x599ECD2C)
 I (D:\keil5\ARM\ARMCC\include\stdarg.h)(0x599ECD2A)
-I (..\rtc.h)(0x6360B57F)
+I (..\rtc.h)(0x639160B1)
 F (..\operate_flash.c)(0x6390AE1C)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O1 --apcs=interwork --split_sections -I ..\Libraries\CMSIS\Device\ST\STM32F0xx\Include -I ..\Libraries\STM32F0xx_StdPeriph_Driver\inc -I ..\Radio\inc -I ..\Libraries\CMSIS\Include -I ..\. -I ..\Radio\lora_app\common -I ..\Radio\lora_app\node -I ..\Radio\lora_app-I.\RTE\_Demo-ID:\keil5_pack\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include-ID:\keil5\ARM\CMSIS\Include-D__UVISION_VERSION="527" -DSTM32F030x6 -DSTM32F030 -DUSE_STDPERIPH_DRIVER-o .\objects\operate_flash.o --omf_browse .\objects\operate_flash.crf --depend .\objects\operate_flash.d)
 I (..\operate_flash.h)(0x638F3605)
 I (..\Libraries\CMSIS\Device\ST\STM32F0xx\Include\stm32f0xx.h)(0x635FA0BA)
@@ -713,13 +713,13 @@ F (..\Radio\lora_app\lora_common.c)(0x638F3605)(--c99 -c --cpu Cortex-M0 -D__MIC
 I (D:\keil5\ARM\ARMCC\include\stdio.h)(0x599ECD2C)
 I (D:\keil5\ARM\ARMCC\include\stdint.h)(0x599ECD2E)
 I (D:\keil5\ARM\ARMCC\include\string.h)(0x599ECD2C)
-I (..\Radio\lora_app\lora_common.h)(0x638F3605)
-F (..\Radio\lora_app\lora_node.c)(0x638F3605)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O1 --apcs=interwork --split_sections -I ..\Libraries\CMSIS\Device\ST\STM32F0xx\Include -I ..\Libraries\STM32F0xx_StdPeriph_Driver\inc -I ..\Radio\inc -I ..\Libraries\CMSIS\Include -I ..\. -I ..\Radio\lora_app\common -I ..\Radio\lora_app\node -I ..\Radio\lora_app-I.\RTE\_Demo-ID:\keil5_pack\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include-ID:\keil5\ARM\CMSIS\Include-D__UVISION_VERSION="527" -DSTM32F030x6 -DSTM32F030 -DUSE_STDPERIPH_DRIVER-o .\objects\lora_node.o --omf_browse .\objects\lora_node.crf --depend .\objects\lora_node.d)
+I (..\Radio\lora_app\lora_common.h)(0x639141D6)
+F (..\Radio\lora_app\lora_node.c)(0x6391627B)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O1 --apcs=interwork --split_sections -I ..\Libraries\CMSIS\Device\ST\STM32F0xx\Include -I ..\Libraries\STM32F0xx_StdPeriph_Driver\inc -I ..\Radio\inc -I ..\Libraries\CMSIS\Include -I ..\. -I ..\Radio\lora_app\common -I ..\Radio\lora_app\node -I ..\Radio\lora_app-I.\RTE\_Demo-ID:\keil5_pack\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include-ID:\keil5\ARM\CMSIS\Include-D__UVISION_VERSION="527" -DSTM32F030x6 -DSTM32F030 -DUSE_STDPERIPH_DRIVER-o .\objects\lora_node.o --omf_browse .\objects\lora_node.crf --depend .\objects\lora_node.d)
 I (D:\keil5\ARM\ARMCC\include\stdio.h)(0x599ECD2C)
 I (D:\keil5\ARM\ARMCC\include\stdint.h)(0x599ECD2E)
 I (D:\keil5\ARM\ARMCC\include\string.h)(0x599ECD2C)
-I (..\Radio\lora_app\lora_common.h)(0x638F3605)
-I (..\Radio\lora_app\lora_node.h)(0x638F3605)
+I (..\Radio\lora_app\lora_common.h)(0x639141D6)
+I (..\Radio\lora_app\lora_node.h)(0x639141CE)
 I (..\.\user.h)(0x6360E051)
 I (..\Libraries\CMSIS\Device\ST\STM32F0xx\Include\stm32f0xx.h)(0x635FA0BA)
 I (..\Libraries\CMSIS\Include\core_cm0.h)(0x547D9682)
@@ -759,4 +759,4 @@ I (..\Radio\inc\sx126x.h)(0x5BBF0271)
 I (..\Radio\inc\sx126x-board.h)(0x5BBF0D84)
 I (..\Radio\inc\crc.h)(0x5C92FCC7)
 I (..\.\uart.h)(0x638DEA0F)
-I (..\.\rtc.h)(0x6360B57F)
+I (..\.\rtc.h)(0x639160B1)
