@@ -160,8 +160,20 @@ static void _send_data(){
 
 
 static lora_err_t _idie_fsm_func(){
-
-	lora_change_state(CAD_CHECK_FSM);
+	uint32_t min_t = rtc_get_min();
+	static uint32_t old_min_t = 0;
+	
+	//下次判断过一分钟后
+	if(old_min_t == min_t){
+		return LORA_OK;
+	}
+	printf("_idie_fsm_func[%d]\n", min_t);
+	//判断
+	if(min_t%NODE_NUM == LORA_NODE_ADDR){
+		printf("_idie_fsm_func_send");
+		lora_change_state(CAD_CHECK_FSM);
+		old_min_t = min_t;
+	}
 	return LORA_OK;
 }
 
@@ -230,11 +242,11 @@ static lora_err_t _recv_end_fsm_func(){
 	rtc_set_time(&RTC_TimeStructure);
 	
 	if(_recv_buf[3] == LORA_NODE_ADDR){
-		printf("join SLEEP_FSM\n");
-		lora_change_state(SLEEP_FSM);
+		printf("join IDIE_FSM\n");
+		lora_change_state(IDIE_FSM);
 	}else{
 		printf("join CAD_CHECK_FSM\n");
-		lora_change_state(CAD_CHECK_FSM);
+		lora_change_state(AGAIN_FSM);
 	}
 	
 
@@ -280,12 +292,14 @@ static lora_err_t _again_fsm_func(){
 	//等待下次重新
 	//lora_change_state(AGAINING_FSM);
 	//printf("[%s][%d]\n", __func__, __LINE__);
+	lora_common_delay_s(1);
 	lora_change_state(CAD_CHECK_FSM);
 	return LORA_OK;
 }
 
 static lora_err_t _againing_fsm_func(){
-	Delay_Ms(5000);
+	//Delay_Ms(5000);
+	lora_common_delay_s(1);
 	lora_change_state(AGAIN_END_FSM);
 	return LORA_OK;
 }

@@ -4,7 +4,11 @@
 #include <stdint.h>
 
 
-#define WAIT_TIME 60*60 //秒单位
+#define WAIT_TIME 1 //失败后等待 秒单位
+
+#define DURING_TIME 60 //间隔 秒单位
+
+#define NODE_NUM 3 //产品数量
 
 typedef int lora_err_t;
 
@@ -99,5 +103,10 @@ void lora_change_state(lora_fsm_state state);
 
 //得到base_info
 lora_base_data_t *lora_node_base_info();
+
+/*
+延迟秒
+*/
+void lora_common_delay_s(int num);
 #endif
 

@@ -78,3 +78,19 @@ void rtc_set_time(RTC_TimeTypeDef	  *RTC_TimeStructure)
 
 }
 
+//获得秒, 分钟计数
+uint32_t rtc_get_sec(){
+	RTC_TimeTypeDef	  RTC_TimeStructure;
+	uint32_t sec = 0;
+	RTC_GetTime(RTC_HourFormat_24,&RTC_TimeStructure);
+	sec = RTC_TimeStructure.RTC_Minutes*60 + RTC_TimeStructure.RTC_Seconds;
+	return sec;
+}
+//获得秒, 分钟计数
+uint32_t rtc_get_min(){
+	RTC_TimeTypeDef	  RTC_TimeStructure;
+	uint32_t min = 0;
+	RTC_GetTime(RTC_HourFormat_24,&RTC_TimeStructure);
+	min =RTC_TimeStructure.RTC_Hours*60 + RTC_TimeStructure.RTC_Minutes;
+	return min;
+}

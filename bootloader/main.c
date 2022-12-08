@@ -121,7 +121,6 @@ int main( void )
 		Radio.IrqProcess( ); // Process Radio IRQ
 		lora_node_task();
 		_write_sn();
-		_get_rtc_time();
 	}
 }
 

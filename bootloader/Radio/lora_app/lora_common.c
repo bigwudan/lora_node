@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <string.h>
 #include "lora_common.h"
+#include "rtc.h"
 
 #define MAX_SEND_NUM 24
 
@@ -85,4 +86,19 @@ void lora_common_get_data(uint8_t **buf, uint8_t *len){
 }
 
 
+
+/*
+延迟秒
+*/
+void lora_common_delay_s(int num){
+	uint32_t count  = 0;
+	count = rtc_get_sec();
+	count = count + num;
+	while(1){
+		if(rtc_get_sec() > count ){
+			break;
+		}
+	}
+	return ;
+}
 
