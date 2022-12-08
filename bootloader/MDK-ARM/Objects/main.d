@@ -43,3 +43,4 @@
 .\objects\main.o: ..\Radio\lora_app\lora_common.h
 .\objects\main.o: ..\rtc.h
 .\objects\main.o: ..\operate_flash.h
+.\objects\main.o: ..\delay.h

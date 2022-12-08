@@ -123,15 +123,15 @@ void lora_node_init(){
 																 LORA_CODINGRATE, 0, LORA_PREAMBLE_LENGTH,
 																 LORA_SYMBOL_TIMEOUT, LORA_FIX_LENGTH_PAYLOAD_ON,
 																 0, true, 0, 0, LORA_IQ_INVERSION_ON, false );	
-	printf("config[%d][%d][%d][%d][%d][%d][%d][%d]\n",
-	MODEM_LORA,
-	TX_OUTPUT_POWER, 
-	LORA_BANDWIDTH, 
-	LORA_SPREADING_FACTOR ,
-	LORA_CODINGRATE,
-	LORA_PREAMBLE_LENGTH ,
-	LORA_FIX_LENGTH_PAYLOAD_ON,
-	LORA_IQ_INVERSION_ON);
+//	printf("config[%d][%d][%d][%d][%d][%d][%d][%d]\n",
+//	MODEM_LORA,
+//	TX_OUTPUT_POWER, 
+//	LORA_BANDWIDTH, 
+//	LORA_SPREADING_FACTOR ,
+//	LORA_CODINGRATE,
+//	LORA_PREAMBLE_LENGTH ,
+//	LORA_FIX_LENGTH_PAYLOAD_ON,
+//	LORA_IQ_INVERSION_ON);
 	return ;
 }
 
@@ -161,17 +161,13 @@ static void _send_data(){
 
 static lora_err_t _idie_fsm_func(){
 	uint32_t min_t = rtc_get_min();
-	static uint32_t old_min_t = 0;
-	
-	//下次判断过一分钟后
-	if(old_min_t == min_t){
-		return LORA_OK;
-	}
+
 	//判断
 	if(min_t%NODE_NUM == LORA_NODE_ADDR){
 		printf("_idie_fsm_func_send\n");
+		rtc_get_sec();
 		lora_change_state(CAD_CHECK_FSM);
-		old_min_t = min_t;
+
 	}
 	return LORA_OK;
 }
@@ -227,22 +223,22 @@ static lora_err_t _recv_end_fsm_func(){
 	
 
 	
-	if(_recv_buf[_recv_len - 3] >= 12){
-		RTC_TimeStructure.RTC_H12 = RTC_H12_PM;
-		RTC_TimeStructure.RTC_Hours = _recv_buf[_recv_len - 3] - 12;
-	}else{
-		RTC_TimeStructure.RTC_H12 = RTC_H12_AM;
-		RTC_TimeStructure.RTC_Hours = _recv_buf[_recv_len - 3];
-	}
+//	if(_recv_buf[_recv_len - 3] >= 12){
+//		RTC_TimeStructure.RTC_H12 = RTC_H12_PM;
+//		RTC_TimeStructure.RTC_Hours = _recv_buf[_recv_len - 3] - 12;
+//	}else{
+//		RTC_TimeStructure.RTC_H12 = RTC_H12_AM;
+//		RTC_TimeStructure.RTC_Hours = _recv_buf[_recv_len - 3];
+//	}
 	
-
+	RTC_TimeStructure.RTC_Hours = _recv_buf[_recv_len - 3];
 	RTC_TimeStructure.RTC_Minutes =_recv_buf[_recv_len - 2];
 	RTC_TimeStructure.RTC_Seconds = _recv_buf[_recv_len - 1];
 	rtc_set_time(&RTC_TimeStructure);
 	
 	if(_recv_buf[3] == LORA_NODE_ADDR){
 		printf("join IDIE_FSM\n");
-		lora_change_state(IDIE_FSM);
+		lora_change_state(SLEEP_FSM);
 	}else{
 		printf("join CAD_CHECK_FSM\n");
 		lora_change_state(AGAIN_FSM);
@@ -259,8 +255,8 @@ static lora_err_t _recv_overtime_fsm_func(){
 
 static lora_err_t _sleep_fsm_func(){
 	printf("[%s][%d]\n", __func__, __LINE__);	
-	Delay_Ms(1000*60);
-	lora_change_state(CAD_CHECK_FSM);
+	RTC_Alarm_set_min(WAIT_TIME*NODE_NUM);
+	PWR_EnterSTANDBYMode();	
 	return LORA_OK;
 }
 

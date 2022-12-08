@@ -13,5 +13,16 @@ uint32_t rtc_get_sec();
 uint32_t rtc_get_min();
 void rtc_set(void);
 
+//
+void RTC_NVIC_Config(void);
+
+void RTC_Alarm_Config(void);
+/*
+ƒ÷¡Â
+@param min ∑÷÷”
+*/
+void RTC_Alarm_set_min(uint8_t min);
+
+
 #endif
 

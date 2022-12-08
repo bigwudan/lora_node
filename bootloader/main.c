@@ -28,6 +28,8 @@ Maintainer: Miguel Luis and Gregory Cristian
 
 #include "operate_flash.h"
 
+#include "delay.h"
+
 
 
 void SysClock_48()
@@ -48,7 +50,7 @@ void RCC_Configuration()
   
   /* Enable peripheral Clock */
 
-  
+  RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR, ENABLE);  
   RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1|RCC_APB2Periph_SYSCFG, ENABLE);
 }
 
@@ -117,6 +119,9 @@ int main( void )
 	lora_node_init(); //初始化
 	printf("lora_node_init_ok\n");
 	_set_addr();
+	_get_rtc_time();
+
+	
 	while(1){
 		Radio.IrqProcess( ); // Process Radio IRQ
 		lora_node_task();
