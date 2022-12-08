@@ -167,10 +167,9 @@ static lora_err_t _idie_fsm_func(){
 	if(old_min_t == min_t){
 		return LORA_OK;
 	}
-	printf("_idie_fsm_func[%d]\n", min_t);
 	//判断
 	if(min_t%NODE_NUM == LORA_NODE_ADDR){
-		printf("_idie_fsm_func_send");
+		printf("_idie_fsm_func_send\n");
 		lora_change_state(CAD_CHECK_FSM);
 		old_min_t = min_t;
 	}
