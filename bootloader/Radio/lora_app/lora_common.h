@@ -8,7 +8,7 @@
 
 #define DURING_TIME 60 //间隔 秒单位
 
-#define NODE_NUM 3 //产品数量
+#define NODE_NUM 8 //产品数量
 
 typedef int lora_err_t;
 

@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\LLCC68 Demo.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\LLCC68 Demo.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Thu Dec 08 22:46:59 2022
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Sat Dec 10 21:43:12 2022
 <BR><P>
 <H3>Maximum Stack Usage =        184 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -182,10 +182,9 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = __aeabi_uidivmod
 </UL>
 <BR>[Called By]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_GetClocksFreq
+<LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Init
 <LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RTC_Alarm_set_min
 <LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Tick_Configration
-<LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Init
-<LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_idie_fsm_func
 </UL>
 
 <P><STRONG><a name="[d5]"></a>__aeabi_memcpy</STRONG> (Thumb, 36 bytes, Stack size 0 bytes, memcpya.o(.text))
@@ -1681,12 +1680,12 @@ Global Symbols
 <P><STRONG><a name="[68]"></a>__2printf</STRONG> (Thumb, 0 bytes, Stack size 24 bytes, printf8.o(i.__0printf$8))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = __2printf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rtc_get_sec
+<BR>[Called By]<UL><LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_write_sn
+<LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_get_rtc_time
+<LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rtc_get_sec
 <LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RTC_Alarm_set_min
 <LI><a href="#[1e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HW_int
-<LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_write_sn
-<LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_get_rtc_time
 <LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_sleep_fsm_func
 <LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_send_data
 <LI><a href="#[e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_recv_end_fsm_func
@@ -1827,12 +1826,12 @@ Global Symbols
 <P><STRONG><a name="[1e]"></a>main</STRONG> (Thumb, 44 bytes, Stack size 0 bytes, main.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 164<LI>Call Chain = main &rArr; HW_int &rArr; UartInit &rArr; USART_Init &rArr; RCC_GetClocksFreq &rArr; __aeabi_uidivmod
 </UL>
-<BR>[Calls]<UL><LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lora_node_task
-<LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lora_node_init
-<LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HW_int
-<LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_write_sn
+<BR>[Calls]<UL><LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_write_sn
 <LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_set_addr
 <LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_get_rtc_time
+<LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lora_node_task
+<LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lora_node_init
+<LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HW_int
 <LI><a href="#[68]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> entry9a.o(.ARM.Collect$$$$0000000B)
@@ -2064,12 +2063,11 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_cad_check_fsm_func
 </UL>
 
-<P><STRONG><a name="[e0]"></a>_idie_fsm_func</STRONG> (Thumb, 40 bytes, Stack size 8 bytes, lora_node.o(i._idie_fsm_func))
+<P><STRONG><a name="[e0]"></a>_idie_fsm_func</STRONG> (Thumb, 38 bytes, Stack size 8 bytes, lora_node.o(i._idie_fsm_func))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = _idie_fsm_func &rArr; rtc_get_sec &rArr; __2printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rtc_get_sec
 <LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rtc_get_min
-<LI><a href="#[6e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uidivmod
 <LI><a href="#[d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lora_change_state
 <LI><a href="#[68]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>

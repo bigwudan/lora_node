@@ -12,6 +12,7 @@
 ".\objects\stm32f0xx_tim.o"
 ".\objects\stm32f0xx_usart.o"
 ".\objects\stm32f0xx_flash.o"
+".\objects\stm32f0xx_dma.o"
 ".\objects\main.o"
 ".\objects\stm32f0xx_it.o"
 ".\objects\uart.o"
